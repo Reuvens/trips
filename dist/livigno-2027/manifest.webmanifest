@@ -1,0 +1,11 @@
+{
+  "name": "ליביניו · 26.2–6.3.2027",
+  "short_name": "ליביניו",
+  "description": "אפליקציית החופשה והמגזין של משפחת סייג — עובד גם אופליין",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./app/index.html",
+  "display": "standalone",
+  "background_color": "#F3F6FA",
+  "theme_color": "#0F2338"
+}

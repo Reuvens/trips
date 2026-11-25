@@ -1,0 +1,1583 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# SKI LIVIGNO 2027 — מקור האמת היחיד לעובדות הטיול (Single Source of Truth)
+#
+# עקרונות מבניים:
+#   1. אין כאן שדות מחושבים כפולים (כמו מספר לילות, מספר גולשים, סה״כ מנויים או סה״כ קורסים).
+#      כל הערכים הנגזרים מחושבים אוטומטית ב-src/domain/deriveTrip.ts.
+#   2. אין כאן מזהי הזמנות פרטיים (PNR / PIN / טלפון אישי) — הם מופרדים פיזית ל-data/private.yaml.
+#   3. אין כאן שער מטבע — השער חי ב-data/rates.yaml ומתעדכן אוטומטית מול ה-ECB.
+#   4. כל התייחסות לסכום כסף או לתאריך טיול בתוך טקסט חי משתמשת בטוקנים מוקלדים {{ ... }}.
+# ═══════════════════════════════════════════════════════════════════════════
+
+meta:
+  id: "ski-livigno-2027"
+  sharedPublicly: true
+  artifactUrl: "https://claude.ai/artifact/HFdawCWnkEQEJo3tuLUNDB"
+  lastDataReview: "2026-11-11"
+
+dates:
+  start: "2027-02-26"
+  end: "2027-03-06"
+  homeLanding: "2027-03-07"
+  aptIn: "2027-02-27"
+  aptOut: "2027-03-06"
+  courseStart: "2027-02-28"
+  courseEnd: "2027-03-05"
+  courseHours:
+    start: "11:00"
+    end: "13:00"
+  airportExitMin: 75
+  airportBeforeMin: 180
+  roadBufferMin: 30
+
+decidedResortId: "livigno"
+
+party:
+  juniorMaxAge: 14
+  bandsSummaryHe: "ראובן מבוגר · מיקה וניצן Youth (ילידות 2002–2010) · גלי Junior (ילידת 2011–2018)"
+  members:
+    - id: "reuven"
+      nameHe: "ראובן"
+      nameEn: "Reuven"
+      role: "advanced"
+      roleHe: "גולש מנוסה — ציוד מתקדם, בלי הדרכה"
+      bandHe: "מבוגר"
+      birthYearRuleHe: "תעריף מבוגר רגיל"
+      gearTierHe: "Gold / Premium (כולל קסדה)"
+      scheduleFocusHe: "גלישה חופשית בשני צדי העמק (Mottolino ו-Carosello 3000) בזמן הקורס של הבנות, ומפגש צהריים משותף"
+      passEur: 407
+    - id: "orit"
+      nameHe: "אורית"
+      nameEn: "Orit"
+      role: "non_skier"
+      roleHe: "לא גולשת — בלי מנוי ובלי ציוד"
+      bandHe: "—"
+      birthYearRuleHe: "ללא מנוי גלישה (כרטיס הולכי רגל לרכבל לפי צורך)"
+      gearTierHe: "ללא השכרת ציוד סקי"
+      scheduleFocusHe: "ספא Aquagranda, מדרחוב 250 החנויות הפטורות ממכס, הליכות חורף, ועלייה ברכבל לבקתות ההר לארוחת צהריים עם המשפחה"
+      passEur: 0
+    - id: "mika"
+      nameHe: "מיקה"
+      nameEn: "Mika"
+      age: 20
+      role: "beginner"
+      roleHe: "מתחילה — קורס קבוצתי"
+      bandHe: "Youth"
+      birthYearRuleHe: "ילידי 2002–2010 (לאמת שנת לידה בדרכון)"
+      gearTierHe: "Silver — סקי חדיש וסלחן למתחילות + קסדה"
+      scheduleFocusHe: "ראשון–שישי 11:00–13:00 ב-Scuola Sci Centrale (Campo Scuola 23), ותרגול על כחולים רחבים אחרי הצהריים"
+      passEur: 346
+    - id: "nitzan"
+      nameHe: "ניצן"
+      nameEn: "Nitzan"
+      age: 18
+      role: "beginner"
+      roleHe: "מתחילה — קורס קבוצתי"
+      bandHe: "Youth"
+      birthYearRuleHe: "ילידי 2002–2010 · הזמנת טיסה נפרדת לשמירת גמישות"
+      gearTierHe: "Silver — סקי חדיש וסלחן למתחילות + קסדה"
+      scheduleFocusHe: "ראשון–שישי 11:00–13:00 ב-Scuola Sci Centrale יחד עם מיקה וגלי, ויציאות בערב במדרחוב הכפר"
+      passEur: 346
+    - id: "gali"
+      nameHe: "גלי"
+      nameEn: "Gali"
+      age: 14
+      role: "beginner"
+      roleHe: "מתחילה — קורס קבוצתי"
+      bandHe: "Junior"
+      birthYearRuleHe: "ילידי 2011–2018 (הנחת Junior משמעותית — לאמת שנת לידה)"
+      gearTierHe: "Silver — סקי חדיש וסלחן למתחילות + קסדה"
+      scheduleFocusHe: "נכנסת לקבוצת המבוגרים מגיל 14 ב-Scuola Sci Centrale יחד עם אחיותיה (ללא תוספת מחיר של קורס ילדים)"
+      passEur: 203
+
+oritGuide:
+  - titleHe: "Aquagranda Active You — מתחם הספא והבריכות"
+    whenHe: "יום שלם או ימי שלג סוערים"
+    detailHe: "אחד ממרכזי הספא האלפיניים הגדולים באירופה: בריכות חמות מול השלג, סאונות ביו, חמאם ואזור Slide & Fun. שמור גם למקלחת ביום האחרון אם גולשים בשבת בבוקר."
+    mapQuery: "Aquagranda Livigno"
+    url: "https://www.aquagrandalivigno.com/en/"
+  - titleHe: "מדרחוב הקניות הפטור ממכס (Via Plan · Via Ostaria)"
+    whenHe: "בקרים רגועים ואחר הצהריים"
+    detailHe: "כ-250 חנויות פטורות ממע״מ לאורך מרכז הכפר השטוח — בשמים, אופנה, משקפיים, ציוד חורף ובתי קפה אלפיניים במרחק צעדים מ-Calanda."
+    mapQuery: "Via Plan Livigno"
+  - titleHe: "עלייה ברכבל כנוסעת ללא מגלשיים למפגש צהריים בהר"
+    whenHe: "בצהריים (סביב 13:15 אחרי סיום הקורס של הבנות)"
+    detailHe: "הגונדולות של Carosello 3000 ו-Mottolino מוכרות כרטיס הלוך-חזור להולכי רגל — נפגשים כולנו בבקתת שמש בפסגה לארוחת צהריים מול הנוף."
+    mapQuery: "Carosello 3000 Livigno"
+  - titleHe: "שבילי הליכת חורף מהודקים, החלקה על קרח וטיול יום"
+    whenHe: "ימים בהירים באמצע השבוע"
+    detailHe: "שביל הולכי רגל כבוש בשלג לאורך נהר ה-Spoel בעמק, החלקה על הקרח במרכז, או קפיצה באוטובוס למעיינות QC Terme Bormio / רכבת Bernina האדומה בשווייץ."
+    mapQuery: "QC Terme Bagni Nuovi Bormio"
+
+flights:
+  legs:
+    - id: "out"
+      flight: "LY381"
+      date: "2027-02-26"
+      dep: "05:15"
+      arr: "08:35"
+      fromHe: "נתב״ג · טרמינל 3"
+      toHe: "מילאנו מלפנסה · טרמינל 1"
+      fromTz: "Asia/Jerusalem"
+      toTz: "Europe/Rome"
+      mapQuery: "Ben Gurion Airport Terminal 3"
+      duration: "4:20"
+    - id: "back"
+      flight: "LY388"
+      date: "2027-03-06"
+      dep: "22:10"
+      arr: "03:00"
+      arrDate: "2027-03-07"
+      fromHe: "מילאנו מלפנסה · טרמינל 1"
+      toHe: "נתב״ג · טרמינל 3"
+      fromTz: "Europe/Rome"
+      toTz: "Asia/Jerusalem"
+      mapQuery: "Milan Malpensa Airport Terminal 1"
+      duration: "3:50"
+  baggageHe: "מזוודה אחת לבטן המטוס לכל נוסע (1PC) + תיק יד — זהה בכל שלוש ההזמנות"
+  pointsPerAwardTicket: 25600
+  bookings:
+    - id: "reuven"
+      who: ["reuven"]
+      refKey: "ski_pnr_reuven"
+      ticketRefKeys: ["ticket_reuven"]
+      classHe: "Economy Classic (N)"
+      points: 0
+      usd: 75.78
+      seatsAssigned: true
+      seatsHe: "41H הלוך · 40C חזור"
+      noteHe: "כרטיס שונה מארבעת האחרים: מחיר הבסיס אופס בהנחה/שובר ושולמו רק המסים, ללא מייל מימוש נקודות — תנאי שינוי וביטול נפרדים"
+    - id: "nitzan"
+      who: ["nitzan"]
+      refKey: "ski_pnr_nitzan"
+      ticketRefKeys: ["ticket_nitzan"]
+      classHe: "Economy (E) · מימוש נקודות"
+      points: 25600
+      usd: 75.78
+      seatsAssigned: false
+      seatsHe: "לא נבחרו"
+      noteHe: "הזמנה נפרדת במכוון לשמירת גמישות עבור ניצן — לא לאחד הזמנות"
+    - id: "three"
+      who: ["orit", "mika", "gali"]
+      refKey: "ski_pnr_three"
+      ticketRefKeys: ["ticket_orit", "ticket_mika", "ticket_gali"]
+      classHe: "Economy (E) · מימוש נקודות"
+      points: 76800
+      usd: 227.34
+      seatsAssigned: false
+      seatsHe: "לא נבחרו"
+
+lodgingComparisonAssumption:
+  eurLow: 3500
+  eurHigh: 5500
+
+apartment:
+  name: "Appartamenti Calanda — דירת SOLE"
+  unitHe: "דירת SOLE · שני חדרי שינה · לארבעה מבוגרים ונערה בת 14"
+  hostName: "Omar Castellani"
+  hostHe: "Omar Castellani, בעל המקום"
+  address: "Via Pontiglia 295, Livigno"
+  phone: "+39 0342 970092"
+  whatsappDigits: "390342970092"
+  url: "https://www.appartamenticalandalivigno.it"
+  bookingPage: "https://www.booking.com/hotel/it/appartamenti-calanda-livigno-center.html"
+  hotelsQuery: "Appartamenti Calanda Livigno Center"
+  mapQuery: "Via Pontiglia 295 Livigno"
+  bookedOn: "2026-10-05"
+  bookedViaHe: "ישירות מול המארח במייל — לא דרך Booking"
+  eurTotal: 3300
+  eurPaid: 1650
+  paidOn: "2026-10-05"
+  paidHowHe: "כרטיס אשראי בקישור תשלום מאובטח של UniCredit"
+  refundable: false
+  besafeNoteHe: "ויתרת במודע על גרסת הביטוח BeSafe Plus של המארח, כיוון שלפי תנאי הפוליסה היא אינה מכסה ביטול בשל מלחמה או מצב ביטחוני."
+  taxEur: 50
+  confTax: "modelled"
+  checkInApprox: "~15:00"
+  checkOutApprox: "~10:00"
+  refKey: "calanda_auth"
+  factsHe:
+    - "ציון 9.5 ב-Booking (36 ביקורות) · חניה פרטית חינם · Wi-Fi · מרפסת"
+    - "במרכז הכפר: Sport4U להשכרת ציוד באותו רחוב (כ-50 מ׳), ו-Campo Scuola 23 של בית הספר במרחק הליכה קצר"
+    - "הוראות הכניסה נשלחות בווטסאפ יום לפני ההגעה"
+  askHe:
+    - "מתי משלמים את היתרה ({{ apartment.balanceText }}), ובאיזה אמצעי תשלום — לא צוין במייל"
+    - "מאיזו שעה נכנסים בשבת, והאם אפשר להשאיר מזוודות בבוקר כדי לצאת לגלוש לפני הצ׳ק-אין"
+    - "האם מצעים, מגבות וניקיון סופי כלולים במחיר"
+    - "וידוא חניה פרטית שמורה לרכב במידה ותחליטו לשכור"
+
+firstNightBooked:
+  name: "Casa Noemi"
+  unitHe: "דירת שני חדרי שינה · לארבעה מבוגרים ונערה בת 14"
+  address: "Via Li Caprena (קומה ראשונה), Livigno"
+  whereHe: "בליביניו עצמה"
+  mapQuery: "Via Li Caprena Livigno"
+  hotelsQuery: "Casa Noemi Livigno"
+  bookedOn: "2026-11-08"
+  bookedViaHe: "Booking.com"
+  roomVatEur: 480
+  cleaningEur: 70
+  eurBooking: 550
+  eurThereTax: 6
+  eurPaid: 0
+  checkIn: "14:30"
+  checkInUntil: "23:30"
+  checkOutFrom: "09:30"
+  checkOut: "10:00"
+  freeCancelUntil: "2027-01-26"
+  cancelFeeEur: 480
+  replacedName: "Hotel Bait de Angial"
+  replacedEur: 718
+  refKey: "casa_noemi_conf"
+  pinRefKey: "casa_noemi_pin"
+  phoneRefKey: "casa_noemi_phone"
+  goodHe:
+    - "בתוך ליביניו עצמה — בשבת בבוקר עוברים ל-Calanda בלי מעבר הרים ובלי פקקי החלפה"
+    - "יש מטבח בדירה — מאפשר ארוחת ערב קלה ושינה מוקדמת אחרי ליל טיסה ללא שינה"
+  askHe:
+    - "מגיעים בסביבות {{ decided.arriveHe }} והצ׳ק-אין מ-{{ firstNight.checkIn }} — האם ניתן להשאיר מזוודות או להיכנס מוקדם?"
+    - "איפה ומתי אוספים את המפתחות בדירה"
+    - "וידוא מצעים ומגבות לחמישה ללילה אחד"
+
+excludedHe:
+  - "טיסות אל על — כבר שולמו בנפרד ({{ flights.pointsTotalText }} נקודות מתמיד + {{ flights.usdTotalText }} מסים)"
+  - "ביטוח נסיעות לחו״ל עם הרחבת ספורט חורף — חובה, מוערך בכ-{{ sim.insurancePerPersonText }} לאדם (ניתן להפעיל בסימולטור המחירון)"
+  - "שתייה אלכוהולית (יין ובירות) — הוחרגה לבקשתך"
+  - "ביגוד סקי אישי: חליפות, כפפות תרמיות ומשקפי גלישה (Goggles)"
+  - "אטרקציות וכרטיסי ספא/רכבל יומיים לאורית"
+  - "בוקר גלישה נוסף בשבת האחרונה — אופציה לבחירה (ניתן להפעיל בסימולטור)"
+
+carRental:
+  nameHe: "השכרת רכב — וואן 7 מקומות אוטומט"
+  eurPerDay: 90
+  coverEurPerDay: 20
+  winterEurPerDay: 10
+  litersPer100Km: 7.5
+  eurPerLiter: 1.80
+  conf: "modelled"
+  freeCancelHe: "רוב ההצעות ב-DiscoverCars וב-Kayak כוללות ביטול חינם עד 48 שעות לפני האיסוף — לסנן לפי זה"
+  url: "https://www.discovercars.com/van/milan-airport-malpensa-mxp_3813"
+  compareUrl: "https://www.kayak.com/Milan-7-Passenger-Van-Rentals.53596.7-lcv.ksp"
+  watchHe:
+    - "נהיגת הרים ממושכת מיד אחרי טיסת לילה ללא שינה — זה החיסרון המכריע, לא הפער במחיר"
+    - "רישיון נהיגה בינלאומי מודפס (ממסי) — חובה באיטליה לצד הרישיון הישראלי"
+    - "נהג נוסף מתחת לגיל 25 (מיקה/ניצן) גורר תוספת נהג צעיר ולרוב מותר רק מגיל 21 ומעלה"
+    - "צמיגי חורף או שרשראות שלג חובה בכבישי לומברדיה בין 15.11 ל-15.4 — לוודא שמופיע בשובר"
+    - "הרכב יעמוד בחניה רוב השבוע (האוטובוס בליביניו חינם); לאשר את החניה הפרטית מול המארח ב-Calanda"
+
+simulator:
+  centraleCourseAndGearPerBeginnerEur: 280
+  reuvenStandaloneGoldGearEur: 230
+  travelSkiInsurancePerPersonEur: 40
+  lastSaturdayMorningPerSkierEur: 65
+
+villageMapPins:
+  - id: "calanda"
+    labelHe: "Appartamenti Calanda (SOLE)"
+    labelEn: "Calanda · Via Pontiglia 295"
+    category: "stay"
+    x: 405
+    y: 232
+    walkFromCalandaHe: "נקודת הבסיס שלכם (שבת–שבת)"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+    summaryHe: "הדירה לשבוע המרכזי בלב הכפר. צמוד להשכרת הציוד ובמרחק הליכה קצר משטח הלימוד וממדרחוב החנויות."
+    mapQuery: "Via Pontiglia 295 Livigno"
+  - id: "sport4u"
+    labelHe: "Sport4U — השכרת ציוד"
+    labelEn: "Sport4U · Via Pontiglia 345"
+    category: "ski"
+    x: 438
+    y: 248
+    walkFromCalandaHe: "דקה ברגל (~50 מ׳ באותו רחוב)"
+    forWho: ["reuven", "mika", "nitzan", "gali"]
+    summaryHe: "חנות ההשכרה הקרובה ביותר לדירה — נוחה מאוד לאיסוף ציוד בשבת בבוקר מיד אחרי השארת המזוודות."
+    mapQuery: "Sport4U Via Pontiglia 345 Livigno"
+  - id: "campo23"
+    labelHe: "Campo Scuola 23 · Sci Centrale"
+    labelEn: "Lift 23 · Via Plan 273"
+    category: "ski"
+    x: 348
+    y: 215
+    walkFromCalandaHe: "5–6 דקות הליכה מישורית"
+    forWho: ["mika", "nitzan", "gali"]
+    summaryHe: "נקודת המפגש היומית של קורס המתחילות (ראשון–שישי, 11:00–13:00), עם אפשרות לשמירת מגלשיים מחוממת ללילה על השלג."
+    mapQuery: "Scuola Sci Centrale Via Plan 273 Livigno"
+  - id: "casa_noemi"
+    labelHe: "Casa Noemi (לילה ראשון)"
+    labelEn: "Casa Noemi · Via Li Caprena"
+    category: "stay"
+    x: 495
+    y: 262
+    walkFromCalandaHe: "5 דקות באוטובוס החינמי / מונית קצרה"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+    summaryHe: "דירת 2 חדרי השינה לליל שישי. בתוך העמק עצמו — חוסכת מעבר הרים בשבת בבוקר ומאפשרת יציאה מוקדמת לשלג."
+    mapQuery: "Via Li Caprena Livigno"
+  - id: "aquagranda"
+    labelHe: "Aquagranda Wellness & Spa"
+    labelEn: "Aquagranda · Via Rasia"
+    category: "village"
+    x: 245
+    y: 185
+    walkFromCalandaHe: "8 דקות בקו האוטובוס החינמי"
+    forWho: ["orit", "reuven", "mika", "nitzan", "gali"]
+    summaryHe: "מתחם הספא והבריכות האלפיני — העוגן של אורית בימי השבוע, וגם פתרון מושלם למקלחת אם גולשים בשבת האחרונה."
+    mapQuery: "Aquagranda Livigno"
+  - id: "mottolino"
+    labelHe: "Mottolino Gondola (הרכס המזרחי)"
+    labelEn: "Mottolino · 2,785m"
+    category: "ski"
+    x: 565
+    y: 138
+    walkFromCalandaHe: "7–9 דקות הליכה / אוטובוס סקי חינם"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+    summaryHe: "הצד המזרחי של העמק: פארק השלג האולימפי של 2026, מסלולים אדומים ופרירייד לראובן, ובקתת M'Eating Point לפגישת צהריים."
+    mapQuery: "Mottolino Fun Mountain Livigno"
+  - id: "carosello"
+    labelHe: "Carosello 3000 (הרכס המערבי)"
+    labelEn: "Carosello 3000 · 2,900m"
+    category: "ski"
+    x: 210
+    y: 120
+    walkFromCalandaHe: "אוטובוס סקי חינם לאורך העמק"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+    summaryHe: "הצד המערבי השמשי: מסלולים כחולים רחבים וארוכים להמשך השבוע של הבנות, וגונדולה נוחה לאורית לעלות לתצפית ולצהריים."
+    mapQuery: "Carosello 3000 Livigno"
+  - id: "foscagno"
+    labelHe: "מעבר Foscagno (כניסה ממלפנסה)"
+    labelEn: "Passo del Foscagno · 2,291m"
+    category: "pass"
+    x: 705
+    y: 205
+    walkFromCalandaHe: "כ-20 דקות נסיעה בכניסה לעמק"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+    summaryHe: "שער הכניסה לליביניו מכיוון בורמיו ומילאנו מלפנסה (כולל עמדת המכס ביציאה מאזור ה-Duty Free)."
+    mapQuery: "Passo del Foscagno"
+
+resorts:
+  - id: "livigno"
+    name: "Livigno"
+    nameHe: "ליביניו"
+    countryHe: "איטליה · לומברדיה"
+    order: 1
+    airport: "MXP"
+    airportHe: "מלפנסה"
+    transferMin: 225
+    transferKm: 220
+    pistesKm: 115
+    baseM: 1816
+    villageM: 1816
+    topM: 2900
+    verdictHe: "האתר שבחרנו"
+    liftPassLink: "https://www.skipasslivigno.com/en/livigno-skipass-rates/"
+    schoolLink: "https://scuolascicentrale.it/adult-courses/?lang=en"
+    hotelsQuery: "Livigno"
+    searchQuery: "Livigno"
+    rentals:
+      - name: "Sport4U"
+        pick: true
+        whereHe: "Via Pontiglia 345 — באותו רחוב כמו Calanda, כ-50 מטר הליכה"
+        whatHe: "השכרת סקי וסנובורד ושירות מקצועי צעדים מהדירה ומהמסלולים"
+        url: "https://www.sport4ulivigno.it/"
+      - name: "Scuola Sci Centrale — השכרה"
+        whereHe: "Campo Scuola 23 ו-Via Plan 413 (ליד מעלית 24)"
+        whatHe: "שתי חנויות של בית הספר על המסלול + שמירת ציוד ללילה ב-Campo 23; חבילת קורס + ציוד ב-{{ sim.centraleBundlePerBeginnerText }} למתחילה"
+        url: "https://www.centralelivigno.com/pianifica-vacanza/noleggio-sci/"
+      - name: "Skirental Max"
+        whereHe: "Via Plan 413, ליד מעלית 24"
+        whatHe: "ציון 5.0 ב-Tripadvisor (34 ביקורות) — צוות שירותי ומהיר במרכז"
+        url: "https://www.tripadvisor.com/Attraction_Review-g194799-d7377228-Reviews-Skirental_Max-Livigno_Province_of_Sondrio_Lombardy.html"
+      - name: "Skialo"
+        whereHe: "Via Saroch 791, הצד הצפוני של המרכז"
+        whatHe: "ציון 4.6 ב-Tripadvisor; הזמנה אונליין מראש בהנחה"
+        url: "https://skialo.com/"
+      - name: "David's Rental Ski & Bike"
+        whereHe: "Via S.S. 301 n.48 — לאמת מרחק במפה"
+        whatHe: "ציון 5.0 ב-Tripadvisor (53 ביקורות) — חנות מוערכת מאוד עם הזמנה אונליין"
+        url: "https://www.davidsrentalskibike.com/en/ski-rent-online/"
+    schools:
+      - name: "Scuola Sci Centrale"
+        pick: true
+        whereHe: "Campo Scuola 23, Via Plan 273 — שטח הלימוד ליד Calanda"
+        whatHe: "מעל 40 שנה, מקום 1 ב-Tripadvisor (246 ביקורות). קורס קבוצתי מגיל 14, {{ dates.courseSpanHe }} {{ dates.courseHoursText }} — {{ decided.lessons.unitText }} למתחילה, או {{ sim.centraleBundlePerBeginnerText }} כולל ציוד"
+        url: "https://scuolascicentrale.it/adult-courses/?lang=en"
+      - name: "Scuola Sci Azzurra"
+        whereHe: "Via Ostaria 81, במרכז"
+        whatHe: "ציון 4.9 מ-235 ביקורות ב-CheckYeti; קורסים קבוצתיים למבוגרים ומתחילים עם גמישות יומית"
+        url: "https://www.scuolasciazzurra.it/prenotazioni/prezzi-e-orari/"
+      - name: "Maestri di Sci Livigno · Ski Planet"
+        whereHe: "Via Saroch 810, מול כנסיית סן רוקו"
+        whatHe: "ציון 5.0 מ-222 ביקורות ב-Tripadvisor; מומלצים במיוחד לשיעורים פרטיים וקבוצות קטנות"
+        url: "https://www.maestridiscilivigno.it/english/index"
+      - name: "Scuola Sci Livigno Italy"
+        whereHe: "Campo Scuola 20, Via Fontana 206/A"
+        whatHe: "מעלית לימוד ייעודית משלה וקבוצות קטנות למשפחות"
+        url: "https://scuolascilivigno.info/en/contacts/"
+      - name: "Scuola Sci Galli Fedele"
+        whereHe: "Via Saroch 634"
+        whatHe: "פועל מ-1971; ציון 5.0 ב-CheckYeti לקורס קבוצתי למבוגרים עם תנאי ביטול חינם"
+        url: "https://www.scuolascilivigno.net/"
+    firstNightChecked: "2026-10-05"
+    firstNightOptions:
+      - name: "Hotel Bait de Angial"
+        pick: true
+        areaHe: "טרפאלה · ליביניו"
+        eur: 718
+        score: 9.1
+        reviews: 626
+        stars: 3
+        toLivignoMin: 15
+        freeCancel: true
+        whatHe: "הקרוב והמדורג מהמלונות שנבדקו — על כביש הכניסה ממעבר Foscagno, רבע שעה מ-Calanda"
+        url: "https://www.booking.com/hotel/it/bait-de-angial.html"
+        hotelsQuery: "Hotel Bait de Angial Livigno"
+      - name: "Pianeta Oro Avamposto Meteo"
+        areaHe: "ליביניו · בדרך לפסו ד׳איירה"
+        eur: 561
+        score: 8.0
+        reviews: 168
+        stars: 4
+        toLivignoMin: 10
+        freeCancel: true
+        whatHe: "יחידה שלמה, 2.5 ק״מ מהמרכז — ציון נמוך יותר ומעט ביקורות"
+        url: "https://www.booking.com/hotel/it/pianeta-oro-avamposto-meteo.html"
+        hotelsQuery: "Pianeta Oro Avamposto Meteo Livigno"
+      - name: "Alpen Hotel Chalet"
+        areaHe: "ולדידנטרו · בדרך"
+        eur: 468
+        score: 9.2
+        reviews: 1093
+        stars: 3
+        toLivignoMin: 40
+        freeCancel: true
+        whatHe: "הציון הגבוה ברשימה עם ספא קטן, אבל מחייב 40 דקות נסיעה דרך המעבר בשבת בבוקר"
+        url: "https://www.booking.com/hotel/it/alpen-b-b-chalet-valdidentro.html"
+        hotelsQuery: "Alpen Hotel Chalet Valdidentro"
+      - name: "Hotel San Carlo"
+        areaHe: "ולדידנטרו · בדרך"
+        eur: 566
+        score: 8.8
+        reviews: 1539
+        stars: 3
+        toLivignoMin: 35
+        freeCancel: true
+        whatHe: "בין בורמיו לליביניו — מסעדה, ספא וחניה, הכי הרבה ביקורות ברשימה"
+        url: "https://www.booking.com/hotel/it/hotelsancarlo.html"
+        hotelsQuery: "Hotel San Carlo Valdidentro"
+      - name: "Hotel Meublè Sertorelli Reit"
+        areaHe: "בורמיו · בדרך"
+        eur: 475
+        score: 9.0
+        reviews: 1225
+        stars: 3
+        toLivignoMin: 50
+        freeCancel: true
+        whatHe: "במרכז העיירה ההיסטורית בורמיו — נעים לשישי בערב, אך כמעט שעה נסיעה בשבת בבוקר"
+        url: "https://www.booking.com/hotel/it/meuble-sertorelli-reit.html"
+        hotelsQuery: "Hotel Meuble Sertorelli Reit Bormio"
+      - name: "Hotel San Lorenzo"
+        areaHe: "בורמיו · בדרך"
+        eur: 732
+        score: 9.1
+        reviews: 1075
+        stars: 4
+        toLivignoMin: 50
+        freeCancel: true
+        whatHe: "מלון 4 כוכבים מפנק עם ספא במרכז בורמיו, אך יקר ורחוק מליביניו"
+        url: "https://www.booking.com/hotel/it/san-lorenzo-bormio.html"
+        hotelsQuery: "Hotel San Lorenzo Bormio"
+    car:
+      tollEurWay: 8
+      noteHe: "דרך Lecco, הוולטלינה ומעבר Foscagno (2,291 מ׳) — חובת שרשראות ברכב; תדלוק פטור ממכס בתוך ליביניו"
+    transferOptions:
+      - id: "city_airport_taxis"
+        name: "City Airport Taxis — מיניוואן ל-5"
+        pick: true
+        seats: 5
+        eurReturn: 1230
+        conf: "quoted"
+        whatHe: "מיניוואן פרטי ל-5 נוסעים ומזוודות במחיר רכב קבוע · ~3:45 לכיוון"
+        freeCancelHe: "ביטול חינם עד 24 שעות לפני האיסוף — מצוין בדף ההזמנה"
+        watchHe: "לסמן 5 מזוודות ולציין מספר טיסה ({{ flights.out.flight }}) להמתנת נהג בזמן רישום ה-EES"
+        url: "https://city-airport-taxis.com/airporttransfers/reservations/taxi-from-Milan-Malpensa-Airport-to-Livigno"
+      - id: "mytransfers_livigno"
+        name: "MyTransfers — מיניוואן ל-5"
+        seats: 5
+        eurReturn: 1230
+        conf: "quoted"
+        whatHe: "מיניוואן פרטי ל-5 עם מזוודות, מחיר סופי בהזמנה אונליין · 3:45–3:55 לכיוון"
+        freeCancelHe: "כולל אפשרות ביטול חינם בהזמנה — לוודא מועד מדויק במסך התשלום"
+        watchHe: "לסמן 5 מזוודות ולתת את מספר הטיסה"
+        url: "https://www.mytransfers.com/en/destination/italy/milan-malpensa-airport-mxp/livigno/"
+      - id: "daytrip_livigno"
+        name: "Daytrip — רכב פרטי עם נהג"
+        seats: 5
+        eurReturn: 940
+        conf: "modelled"
+        whatHe: "תמחור לפי 5 מושבים ברכב פרטי · ~3:50 לכיוון, כולל אפשרות עצירת התרעננות באגם קומו"
+        freeCancelHe: "ביטול חינם עד 24 שעות לפני לפי תנאי Daytrip — לוודא בהזמנה"
+        watchHe: "לבחור רכב שמתאים ל-5 מזוודות מלאות; המחיר הסופי נקבע לפי גודל הרכב במסך ההזמנה"
+        url: "https://daytrip.com/landing/malpensa-airport-to-livigno"
+      - id: "livigno_express"
+        name: "Livigno Express — הסעה משותפת"
+        isShared: true
+        eurReturn: 650
+        conf: "quoted"
+        whatHe: "שאטל משותף היוצא מטרמינל 1 במלפנסה בעונה · ~4:40 לכיוון עם עצירות"
+        freeCancelHe: "תנאי הביטול דורשים בדיקה לפני תשלום"
+        watchHe: "האפשרות הזולה ביותר, אך תלויה בלוח זמנים קבוע ואיטית יותר אחרי טיסת לילה"
+        url: "https://www.livignoexpress.com/en/"
+    cost:
+      firstNight:
+        eur: 718
+        conf: "quoted"
+        whatHe: "Hotel Bait de Angial בטרפאלה לחמישה (השורה הקפואה משלב השוואת האתרים)"
+        src: "https://www.booking.com/hotel/it/bait-de-angial.html"
+        srcHe: "Booking — Bait de Angial"
+      passes:
+        insuranceEur: 98
+        conf: "modelled"
+        whatHe: "{{ dates.skiDays }} ימים: ראובן ~{{ party.reuven.passText }} + מיקה וניצן ~{{ party.mika.passText }} כל אחת (Youth) + גלי ~{{ party.gali.passText }} (Junior), ועוד {{ decided.passes.insuranceText }} ביטוח חובה"
+        src: "https://www.skipasslivigno.com/en/livigno-skipass-rates/"
+        srcHe: "Skipass Livigno — מחירון ותקופות עונה"
+      gear:
+        eur: 680
+        conf: "modelled"
+        whatHe: "{{ party.skiers }} סטים ל-{{ dates.skiDays }} ימים · {{ party.beginners }} סטים Silver ואחד Gold, כולל קסדות"
+        src: "https://www.centralelivigno.com/pianifica-vacanza/noleggio-sci/"
+        srcHe: "Scuola Sci Centrale — השכרת ציוד"
+    lessons:
+      unitEur: 185
+      conf: "quoted"
+      whatHe: "{{ party.beginners }} × קורס קבוצתי ב-Scuola Sci Centrale, {{ dates.courseSpanHe }} {{ dates.courseHoursText }}, {{ decided.lessons.unitText }} לאחת · נפגשים ב-Campo Scuola 23 ליד Calanda"
+      altHe: "חלופות: חבילת קורס + ציוד ב-Centrale ב-{{ sim.centraleBundlePerBeginnerText }} לאחת, או הדרכה פרטית"
+      src: "https://scuolascicentrale.it/adult-courses/?lang=en"
+      srcHe: "Scuola Sci Centrale — קורסים למבוגרים"
+    food:
+      perDayEur: 200
+      conf: "modelled"
+      breakdownHe: "מנת היום בבקתה בהר ~{{ world.mountainDishText }}, ארוחת ערב בטרטוריה ~{{ world.trattoriaDinnerText }} לאדם, בוקר וסופר ~{{ world.groceriesDayText }} ליום"
+      src: "https://www.livigno.eu/en/restaurants"
+      srcHe: "Livigno.eu — מסעדות באתר"
+
+  - id: "cervinia"
+    name: "Breuil-Cervinia"
+    nameHe: "צרוויניה"
+    countryHe: "איטליה · עמק אאוסטה"
+    order: 2
+    airport: "MXP"
+    airportHe: "מלפנסה"
+    transferMin: 135
+    transferKm: 184
+    pistesKm: 150
+    baseM: 1524
+    villageM: 2050
+    topM: 3480
+    verdictHe: "השלג הבטוח והנסיעה הקצרה"
+    liftPassLink: "https://www.cervinia.it/en"
+    schoolLink: "https://scuoladiscibreuil.com/en/group-lessons/"
+    hotelsQuery: "Breuil-Cervinia"
+    searchQuery: "Breuil-Cervinia"
+    stays:
+      - name: "Maison Carrel Elegant 6 — דירת 2 חדרי שינה"
+        pick: true
+        conf: "quoted"
+        checked: "2026-09-30"
+        eurLow: 3460
+        eurWeek: 3590
+        eurHigh: 3710
+        historicalBasisHe: "Booking.com (30.9): €3,461 לשבוע לחמישה עם ביטול חינם + מס עירוני וניקיון סופי"
+        kindHe: "דירה בבניין Maison Jean-Antoine Carrel באזור Avouil"
+        bedsHe: "חדר עם מיטת Queen וחדר עם 3 מיטות יחיד — ללא ספה בסלון · חדר רחצה אחד"
+        liftHe: "בית ספר לסקי והשכרת ציוד בבניין"
+        centreHe: "כ-1.3 ק״מ מכיכר הכפר"
+        perksHe: "ציון 8.5 ב-Booking (32 ביקורות) · ספא, סאונה וג׳קוזי בבניין · חניה מקורה"
+        watchHe: "מרוחק ממרכז הכפר ברגל — פחות נוח לימים של אורית ללא שאטל"
+        url: "https://www.booking.com/hotel/it/apartment-maison-elegant-6.html"
+        bookingUrl: "https://www.booking.com/hotel/it/apartment-maison-elegant-6.html"
+        hotelsQuery: "Maison Carrel Elegant 6 Breuil-Cervinia"
+      - name: "Cervinia – Matterhorn Apartments (Cielo Alto)"
+        conf: "quoted"
+        checked: "2026-09-30"
+        eurLow: 2790
+        eurWeek: 2920
+        eurHigh: 3040
+        historicalBasisHe: "Booking.com (30.9): €2,794 לשבוע לחמישה · לבדוק תנאי ביטול"
+        kindHe: "מתחם דירות גדול עם מסעדה ומיני-מרקט בגובה 2,100 מ׳"
+        bedsHe: "כמה תצורות — לבחור יחידה עם 2 חדרי שינה ולא ספה בסלון"
+        liftHe: "ski-to-door"
+        centreHe: "Cielo Alto — כ-1.5 ק״מ מעל הכפר עם שאטל"
+        perksHe: "ציון 8.1 מ-837 ביקורות · נוף למטרהורן · השכרת ציוד במקום"
+        watchHe: "מרוחק מהכפר — פוגע בערבים ובימים של אורית"
+        url: "https://www.booking.com/hotel/it/cervinia-matterhorm-apartments.html"
+        bookingUrl: "https://www.booking.com/hotel/it/cervinia-matterhorm-apartments.html"
+        hotelsQuery: "Cervinia Matterhorn Apartments"
+      - name: "La Maison de Vacances (Cielo Alto)"
+        conf: "quoted"
+        checked: "2026-09-30"
+        eurLow: 1860
+        eurWeek: 1990
+        eurHigh: 2110
+        historicalBasisHe: "Booking.com (30.9): €1,855 לשבוע לחמישה עם ביטול חינם"
+        kindHe: "דירות בבניין La Grand' Ourse"
+        bedsHe: "חלוקת מיטות דורשת אישור מראש"
+        liftHe: "ski-to-door"
+        centreHe: "Cielo Alto — כ-1.5 ק״מ מעל הכפר"
+        perksHe: "חניה חינם ומוסך · מכבסה · Wi-Fi"
+        watchHe: "ציון 7.2 ב-Booking (151 ביקורות) — הציון הנמוך ברשימה"
+        url: "https://www.booking.com/hotel/it/la-maison-de-vacances.html"
+        bookingUrl: "https://www.booking.com/hotel/it/la-maison-de-vacances.html"
+        hotelsQuery: "La Maison de Vacances Breuil-Cervinia"
+    firstNightOptions:
+      - name: "Hotel Sporting"
+        pick: true
+        whatHe: "ליד המעליות והמסעדות, ספא, חדר סקי גדול ואווירה משפחתית"
+        url: "https://www.tripadvisor.com/Hotels-g187864-zff4-Breuil_Cervinia_Valtournenche_Valle_d_Aosta-Hotels.html"
+        hotelsQuery: "Hotel Sporting Breuil-Cervinia"
+      - name: "Hotel Bucaneve"
+        whatHe: "במרכז, משפחתי, ספא טוב ונוף למטרהורן — בחורף עשוי לדרוש מינימום לילות"
+        url: "https://www.tripadvisor.com/Hotel_Review-g187864-d502232-Reviews-Hotel_Bucaneve-Breuil_Cervinia_Valtournenche_Valle_d_Aosta.html"
+        hotelsQuery: "Hotel Bucaneve Breuil-Cervinia"
+    car:
+      tollEurWay: 20
+      noteHe: "כבישים מהירים A4 ו-A5 עד Châtillon (אוטוסטרדה יקרה), ואז 27 ק״מ עלייה; חניונים בתשלום בכפר"
+    transferOptions:
+      - id: "mytransfers_cervinia"
+        name: "MyTransfers — מיניוואן עד 8"
+        pick: true
+        seats: 8
+        eurReturn: 950
+        conf: "quoted"
+        whatHe: "מיניוואן פרטי הלוך וחזור בהזמנה אונליין · ~2:15 לכיוון"
+        watchHe: "לסמן 5 מזוודות ולציין מספר טיסה עבור המתנה ברישום ה-EES"
+        url: "https://www.mytransfers.com/en/destination/italy/milan-malpensa-airport-mxp/breuil-cervinia/"
+      - id: "daytrip_cervinia"
+        name: "Daytrip — רכב פרטי עם נהג"
+        seats: 5
+        eurReturn: 670
+        conf: "modelled"
+        whatHe: "תמחור לפי 5 מושבים ברכב פרטי · ~2:20 לכיוון"
+        watchHe: "לוודא התאמת נפח תא המטען ל-5 מזוודות במסך ההזמנה"
+        url: "https://daytrip.com/en/transfers/malpensa-airport-it/cervinia-valtournenche-it"
+      - id: "ats_cervinia"
+        name: "ATS — הסעה משותפת (שבת וראשון בלבד)"
+        isShared: true
+        eurReturn: 500
+        conf: "quoted"
+        whatHe: "שאטל משותף הפועל רק בסופי שבוע — מתאים לחזור בלבד"
+        watchHe: "בשישי אינו פועל ולכן מצריך הסעה פרטית בהלוך"
+        url: "https://www.airportransferservices.com/reservation/milan-malpensa/cervinia"
+      - id: "chofix_cervinia"
+        name: "Chofix — הצעת מחיר למיניוואן"
+        eurReturn: 500
+        conf: "modelled"
+        whatHe: "הערכה למיניוואן פרטי לחמישה — דורש הצעת מחיר סופית"
+        watchHe: "הערכה לא מאומתת — לבקש הצעה כתובה לפני הזמנה"
+        url: "https://www.chofix.com/en/transfer-from-milan-to-cervinia"
+    cost:
+      firstNight:
+        eur: 380
+        conf: "modelled"
+        whatHe: "לילה אחד בשישי לחמישה — שני חדרים עם ארוחת בוקר"
+        src: "https://www.tripadvisor.com/Hotels-g187864-Breuil_Cervinia_Valtournenche_Valle_d_Aosta-Hotels.html"
+        srcHe: "Tripadvisor — מלונות בצרוויניה"
+      passes:
+        eur: 1640
+        insuranceEur: 98
+        conf: "modelled"
+        whatHe: "{{ party.skiers }} × מנוי Cervinia–Valtournenche ל-{{ dates.skiDays }} ימים ({{ world.cerviniaAdultPassText }} מחירון מבוגר כתקרה) + ביטוח חובה; הנחות צעירים בקופה בלבד"
+        src: "https://monsguide.com/guides/resort-guides/cervinia/ski-area-and-lift-passes/"
+        srcHe: "Monsguide — מחירי מנויים 2026/27"
+      gear:
+        eur: 680
+        conf: "modelled"
+        whatHe: "{{ party.skiers }} סטים ל-{{ dates.skiDays }} ימים · {{ party.beginners }} בסיסיים ואחד פרימיום כולל קסדות"
+        src: "https://www.rentandgo.it/eng/ski-rental-hire/"
+        srcHe: "Rent and Go — רשת השכרה ארצית"
+    lessons:
+      unitEur: 285
+      conf: "modelled"
+      whatHe: "{{ party.beginners }} × קורס קבוצתי {{ dates.courseDays }} ימים, שעתיים וחצי ביום"
+      altHe: "טווח בתי הספר בצרוויניה לקורס שבועי נע סביב האמצע שנבחר"
+      src: "https://scuoladiscibreuil.com/en/lessons-and-rates/"
+      srcHe: "Scuola Sci Breuil — שיעורים ומחירים"
+    food:
+      perDayEur: 220
+      conf: "modelled"
+      breakdownHe: "צהריים בהר, ערב בטרטוריה ובוקר/סופר בדירה — צרוויניה מעט יקרה יותר במסעדות"
+      src: "https://www.numbeo.com/cost-of-living/country_result.jsp?country=Italy"
+      srcHe: "Numbeo — מחירי מסעדות באיטליה"
+
+  - id: "sestriere"
+    name: "Sestriere"
+    nameHe: "ססטרייר"
+    countryHe: "איטליה · פיימונטה · ויה לאטאה"
+    order: 3
+    airport: "MXP"
+    airportHe: "מלפנסה"
+    transferMin: 165
+    transferKm: 233
+    pistesKm: 400
+    baseM: 1350
+    villageM: 2035
+    topM: 2823
+    verdictHe: "הגדול — 400 ק״מ והכפר הגבוה באיטליה"
+    liftPassLink: "https://www.vialattea.it/en/skipass/"
+    schoolLink: "https://www.scuolasciborgata.com/en/ski-lessons-prices-sestriere"
+    hotelsQuery: "Sestriere"
+    searchQuery: "Sestriere"
+    stays:
+      - name: "Resort Palace Sestriere 1 e 2 — דירת 2 חדרי שינה"
+        pick: true
+        conf: "quoted"
+        checked: "2026-09-30"
+        eurLow: 2250
+        eurWeek: 2380
+        eurHigh: 2500
+        historicalBasisHe: "Booking.com (30.9): €2,245 לשבוע לחמישה + מס עירוני וניקיון"
+        kindHe: "רזידנס עם קבלה בשני בניינים — דירות 2 חדרי שינה ב-Palace 2"
+        bedsHe: "2 חדרי שינה, חדר רחצה אחד, עד 5 אורחים כולל ספה נפתחת"
+        liftHe: "10 דקות הליכה לרכבל Fraiteve וגישה למדרון Sises"
+        centreHe: "במרכז (Via La Gleisa)"
+        perksHe: "ציון 8.3 ב-Booking (117 ביקורות) · סאונה, חדר כושר ומיני-מרקט בבניין · חניה חינם"
+        watchHe: "לוודא שההזמנה בבניין Palace 2 (המרחק בין הבניינים 1.4 ק״מ) ולבדוק תנאי ביטול"
+        url: "https://www.booking.com/hotel/it/residence-palace-1-e-2.html"
+        bookingUrl: "https://www.booking.com/hotel/it/residence-palace-1-e-2.html"
+        hotelsQuery: "Resort Palace Sestriere"
+      - name: "Fiocco di Neve Apartment"
+        conf: "quoted"
+        checked: "2026-09-30"
+        eurLow: 2680
+        eurWeek: 2810
+        eurHigh: 2930
+        historicalBasisHe: "Booking.com (30.9): €2,683 לשבוע לחמישה · לבדוק תנאי ביטול"
+        kindHe: "דירה פרטית בקומה ראשונה, Via Cesana"
+        bedsHe: "חלוקת מיטות דורשת אישור מראש"
+        liftHe: "בית ספר לסקי ליד הבית"
+        centreHe: "במרכז — כ-150 מ׳ מהכיכר"
+        perksHe: "ציון 9.4 ב-Booking (25 ביקורות) · חניה פרטית ומוסך"
+        watchHe: "מספר ביקורות נמוך יחסית"
+        url: "https://www.booking.com/hotel/it/fiocco-di-neve-sestriere.html"
+        bookingUrl: "https://www.booking.com/hotel/it/fiocco-di-neve-sestriere.html"
+        hotelsQuery: "Fiocco di Neve Apartment Sestriere"
+      - name: "Casa Amanda — חדר שינה אחד"
+        conf: "quoted"
+        checked: "2026-09-30"
+        eurLow: 1470
+        eurWeek: 1590
+        eurHigh: 1840
+        historicalBasisHe: "Booking.com (30.9): €1,588 עם ביטול חינם / €1,467 ללא ביטול"
+        kindHe: "דירה ב-Via Monterotta"
+        bedsHe: "חדר שינה אחד + ספה נפתחת — צפוף לחמישה"
+        liftHe: "במרכז העיירה"
+        centreHe: "כ-250 מ׳ מהכיכר"
+        perksHe: "ציון 9.0 ב-Booking (30 ביקורות) · חניה חינם · מעלית"
+        watchHe: "צפוף לחמישה לשבוע שלם"
+        url: "https://www.booking.com/hotel/it/casa-amanda-sestriere.html"
+        bookingUrl: "https://www.booking.com/hotel/it/casa-amanda-sestriere.html"
+        hotelsQuery: "Casa Amanda Sestriere"
+    firstNightOptions:
+      - name: "Hotel Banchetta"
+        pick: true
+        whatHe: "מלון משפחתי קטן עם חדרי משפחה וארוחת ערב טובה · 200 מ׳ מהמסלולים"
+        url: "https://www.tripadvisor.com/Hotel_Review-g194919-d314311-Reviews-Hotel_Banchetta-Sestriere_Province_of_Turin_Piedmont.html"
+        hotelsQuery: "Hotel Banchetta Sestriere"
+      - name: "Shackleton Mountain Resort"
+        whatHe: "סקי עד הדלת, בריכה מקורה, ג׳קוזי וסאונה"
+        url: "https://www.za.kayak.com/Sestriere-Hotels-Shackleton-Mountain-Resort.173906.ksp"
+        hotelsQuery: "Shackleton Mountain Resort Sestriere"
+    car:
+      tollEurWay: 19
+      noteHe: "כביש A4 לטורינו ו-A32 עד Oulx, ואז 22 ק״מ עלייה בכביש SS24"
+    transferOptions:
+      - id: "mytransfers_sestriere"
+        name: "MyTransfers — מיניוואן"
+        pick: true
+        seats: 7
+        eurReturn: 1200
+        conf: "quoted"
+        whatHe: "מיניוואן פרטי הלוך וחזור בהזמנה אונליין · ~2:45 לכיוון"
+        watchHe: "לסמן 5 מזוודות ולציין מספר טיסה עבור רישום ה-EES"
+        url: "https://www.mytransfers.com/en/destination/italy/milan-malpensa-airport-mxp/sestriere/"
+      - id: "daytrip_sestriere"
+        name: "Daytrip — רכב פרטי עם נהג"
+        seats: 5
+        eurReturn: 870
+        conf: "modelled"
+        whatHe: "תמחור לפי 5 מושבים ברכב פרטי · ~2:40 לכיוון"
+        watchHe: "לוודא התאמה ל-5 מזוודות במסך ההזמנה"
+        url: "https://daytrip.com/en/transfers/malpensa-airport-it/sestriere-it"
+      - id: "alps2alps_sestriere"
+        name: "Alps2Alps — הצעת מחיר"
+        eurReturn: 660
+        conf: "modelled"
+        whatHe: "הערכה למיניוואן מלא לחמישה עם מזוודות · ~2:45 לכיוון"
+        watchHe: "לבקש הצעת מחיר סופית למיניוואן לפני הזמנה"
+        url: "https://www.alps2alps.com/milan-malpensa-airport/mxp-transfer-to-sestriere/"
+      - id: "vialattea_link"
+        name: "רכבת + אוטובוס (Vialattea Link)"
+        isShared: true
+        eurReturn: 400
+        conf: "modelled"
+        whatHe: "Malpensa Express למילאנו, רכבת לטורינו ולאולקס ואוטובוס לססטרייר · ~4 שעות"
+        watchHe: "שלוש החלפות עם חמש מזוודות אחרי טיסת לילה"
+        url: "https://www.trenitalia.com/it/regionale/collegamenti-regionale/vialattea-link.html"
+    cost:
+      firstNight:
+        eur: 320
+        conf: "modelled"
+        whatHe: "לילה אחד בשישי לחמישה — חדר משפחה או שניים עם ארוחת בוקר"
+        src: "https://www.tripadvisor.com/Hotel_Review-g194919-d314311-Reviews-Hotel_Banchetta-Sestriere_Province_of_Turin_Piedmont.html"
+        srcHe: "Tripadvisor — Hotel Banchetta"
+      passes:
+        eur: 1464
+        insuranceEur: 98
+        conf: "modelled"
+        whatHe: "{{ dates.skiDays }} ימים: ראובן, מיקה וניצן בתעריף מבוגר ({{ world.sestriereAdultPassText }}, אין מדרגת Young) + גלי Junior (~{{ world.sestriereJuniorPassText }}) + ביטוח חובה; כולל יום בצרפת"
+        src: "https://www.vialattea.it/wp-content/uploads/2026/07/Prezziario-ITA_3.pdf"
+        srcHe: "Vialattea — מחירון 2026/27 (PDF)"
+      gear:
+        eur: 700
+        conf: "modelled"
+        whatHe: "{{ party.skiers }} סטים ל-{{ dates.skiDays }} ימים · {{ party.beginners }} בסיסיים ואחד Diamond ב-Rent and Go"
+        src: "https://www.rentandgo.it/eng/ski-rental-hire/"
+        srcHe: "Rent and Go — רשת השכרה ארצית"
+    lessons:
+      unitEur: 335
+      conf: "quoted"
+      whatHe: "{{ party.beginners }} × קורס קבוצתי {{ dates.courseDays }} ימים, 10:00–12:50 בעונה הגבוהה"
+      altHe: "אפשרות זולה יותר בסאוזה ד׳אולקס הסמוכה"
+      src: "https://www.scuolasciborgata.com/en/ski-lessons-prices-sestriere"
+      srcHe: "Scuola Sci Borgata — מחירון"
+    food:
+      perDayEur: 215
+      conf: "modelled"
+      breakdownHe: "צהריים בהר, ערב בפיצריה/טרטוריה, בוקר וסופר בדירה"
+      src: "https://www.numbeo.com/cost-of-living/country_result.jsp?country=Italy"
+      srcHe: "Numbeo — מחירי מסעדות באיטליה"
+
+setAside:
+  - id: "monterosa"
+    nameHe: "מונטרוזה (שאמפולוק)"
+    regionHe: "עמק אאוסטה"
+    transferHe: "~2:00"
+    pistesHe: "180 ק״מ בשלושה עמקים"
+    goodHe: "הנסיעה הקצרה ביותר, השטח הטוב ביותר לראובן, מדרגות גיל נדיבות ו-MonterosaSPA במרכז הכפר"
+    notHe: "הכפר השקט ביותר לבנות בערב והנמוך מהמועמדים (1,570 מ׳). הוחלף בססטרייר לבקשתך"
+    verdictHe: "הוחלף בססטרייר"
+  - id: "pila"
+    nameHe: "פילה + אאוסטה"
+    regionHe: "עמק אאוסטה"
+    transferHe: "~1:50"
+    pistesHe: "70 ק״מ"
+    goodHe: "גרים בעיר אאוסטה (רחוב קניות, בתי קפה, עתיקות רומיות לאורית וערבים לבנות) ועולים בגונדולה של 18 דק׳ לשטח כחול רחב"
+    notHe: "70 ק״מ בלבד — קטן מדי לשבוע שלם עבור ראובן, ומחייב עלייה יומית בגונדולה עם הציוד"
+    verdictHe: "שווה בדיקה לטיול קצר"
+  - id: "courmayeur"
+    nameHe: "קורמאיור"
+    regionHe: "עמק אאוסטה"
+    transferHe: "~2:15"
+    pistesHe: "~100 ק״מ"
+    goodHe: "העיירה היפה ביותר לאורית: Via Roma, רכבל Skyway Monte Bianco ל-3,466 מ׳ ומעיינות QC Terme Pré-Saint-Didier"
+    notHe: "לא הר למתחילות: מעט מסלולים כחולים ארוכים וגן הסקי מותר רק עם מדריך"
+    verdictHe: "לא למתחילות"
+  - id: "campiglio"
+    nameHe: "מדונה די קמפיליו"
+    regionHe: "טרנטינו · הדולומיטים"
+    transferHe: "~3:30–4:00"
+    pistesHe: "150 ק״מ"
+    goodHe: "עיירה אלגנטית עם חנויות ואפרה-סקי, נוף הדולומיטים של ברנטה ושטח מתחילים טוב"
+    notHe: "נסיעה ארוכה כמו לליביניו, יקרה יותר והכפר נמוך יותר (1,550 מ׳) ללא יתרון הפטור ממכס"
+    verdictHe: "ליביניו עדיפה"
+  - id: "gardena"
+    nameHe: "ואל גרדנה"
+    regionHe: "הדולומיטים"
+    transferHe: "~3:30–4:30"
+    pistesHe: "175 ק״מ (מתוך 1,200 ב-Dolomiti Superski)"
+    goodHe: "שילוב מופתי של עיירה חיה (אורטיסיי), Alpe di Siusi למתחילות ולהולכי רגל ונוף עוצר נשימה"
+    notHe: "מרוחק מדי ממילאנו מלפנסה — מתאים לטיסה לוורונה או לוונציה"
+    verdictHe: "רחוק ממילאנו"
+  - id: "lathuile"
+    nameHe: "לה טואיל"
+    regionHe: "עמק אאוסטה"
+    transferHe: "~2:30"
+    pistesHe: "160 ק״מ (מחובר ל-La Rosière בצרפת)"
+    goodHe: "שטח כחול-אדום מצוין, רחב ושקט עם מעבר גלישה לצרפת"
+    notHe: "הכפר כמעט ריק מחוץ לשעות הגלישה — אין לאורית איך למלא שישה ימים"
+    verdictHe: "שקט מדי"
+  - id: "bormio"
+    nameHe: "בורמיו"
+    regionHe: "לומברדיה"
+    transferHe: "~3:15"
+    pistesHe: "50 ק״מ"
+    goodHe: "עיירה היסטורית יפהפייה ומעיינות חמים (QC Terme Bormio) — נהדרת לאורית"
+    notHe: "מרחב גלישה קטן ותלול יחסית עם מעט מסלולים קלים למתחילות"
+    verdictHe: "קטן ותלול"
+
+worldFacts:
+  italyPisteInsurance:
+    lawHe: "צו מחוקק 40/2021"
+    sinceHe: "1 בינואר 2022"
+    fineHe: "€100–150"
+    dayPriceEur: 3.5
+    src: "https://www.vialattea.it/en/assicurazione/"
+  hotelVsApartmentGapEur: 1200
+  ees:
+    liveHe: "10 באפריל 2026"
+    src: "https://home-affairs.ec.europa.eu/news/entryexit-system-will-become-fully-operational-10-april-2026-2026-03-30_en"
+  etias:
+    feeEur: 20
+    statusHe: "האיחוד האירופי דחה את היעד של סוף 2026, והשקה במהלך 2027 היא התרחיש הסביר"
+    src: "https://www.eeas.europa.eu/eeas/coming-visa-free-country-and-travelling-europe_en"
+  livignoFoodUnitNotes:
+    mountainDishEur: 17
+    trattoriaDinnerEur: 26
+    breakfastGroceriesDayEur: 40
+  cerviniaAdult7dPassEur: 385.5
+  sestriereAdult7dPassEur: 346.5
+  sestriereJunior7dPassEur: 326
+
+sources:
+  - id: "gemini"
+    whoHe: "Gemini · מחקר עמוק"
+    status: "read"
+    url: "https://docs.google.com/document/d/1aao5Y8YLs8nw1pI3Had7FB0hGsfdBLkdT-FT53uD92Q/edit"
+    localRef: "sources/gemini-deep-research.md"
+    noteHe: "נקרא במלואו. הגיע עצמאית לאותה מסקנה לגבי מונטרוזה, ותרם את מדרגות הגיל, מס התיירות בססטרייר והחוט שהוביל לחוק הביטוח האיטלקי."
+  - id: "mika"
+    whoHe: "מיקה · בדיקה ידנית"
+    status: "read"
+    url: null
+    localRef: "sources/mika-manual-check.pdf"
+    noteHe: "בדיקה ידנית של שלושת האתרים המקוריים (בלי הדרכות ואוכל). אישרה שני מספרים שתיקנו, ותמחרה מלונות במקום דירות — משם נבע כל הפער מולה."
+  - id: "claude"
+    whoHe: "Claude · מחקר עמוק"
+    status: "read"
+    url: "https://claude.ai/public/artifacts/caedba3b-688d-47a5-8405-88eb7045f7f8"
+    localRef: "sources/claude-deep-research.pdf"
+    noteHe: "המפורט משלושת המסמכים — פירוט לפי שורה, חנויות ובתי ספר בשם, תעריף ה-Youth בליביניו, והכרעה לגבי מדרגת הנוער בוויה לאטאה."
+
+reconciled:
+  - topicHe: "סקי-פס ליביניו · 6 ימים מבוגר"
+    historicalWasHe: "€320"
+    historicalOthersHe: "Gemini €374.50 · מיקה €374"
+    historicalNowHe: "€374.50"
+    moved: true
+    historicalWhyHe: "שני מקורות בלתי תלויים נקבו באותו מספר שמתיישב עם המחירון הרשמי בעונה גבוהה."
+  - topicHe: "סקי-פס גודאורי · 6 ימים מבוגר"
+    historicalWasHe: "370 ₾ (מנוי שבועי)"
+    historicalOthersHe: "Gemini 340 ₾ · מיקה 340 ₾"
+    historicalNowHe: "340 ₾"
+    moved: true
+    historicalWhyHe: "שני מקורות זהים תמכו במספר הנמוך יותר."
+  - topicHe: "מדרגות גיל במונטרוזה"
+    historicalWasHe: "מבוגר/נוער בלבד"
+    historicalOthersHe: "Gemini: Young עד 24 (−20%), Junior עד 16 (−30%)"
+    historicalNowHe: "Young ו-Junior מאומתים מול אתר המפעיל"
+    moved: true
+    historicalWhyHe: "בנות 18 ו-20 נכנסות ל-Young ובת 14 ל-Junior — חיסכון משמעותי לעומת ססטרייר."
+  - topicHe: "ביטוח אחריות צד ג׳ בפיסטות באיטליה"
+    historicalWasHe: "לא נספר בכלל"
+    historicalOthersHe: "Gemini: חובה בוויה לאטאה, €3.50 ליום"
+    historicalNowHe: "חוק ארצי באיטליה (צו 40/2021) בכל שלושת האתרים"
+    moved: true
+    historicalWhyHe: "חובה חוקית על כל פיסטה באיטליה ובכל גיל החל מ-1.1.2022, קנס €100–150 ושלילת מנוי."
+  - topicHe: "מס תיירות בססטרייר"
+    historicalWasHe: "לא נספר"
+    historicalOthersHe: "Gemini: €2 לאדם ללילה"
+    historicalNowHe: "€70 נוספו לשורת הלינה"
+    moved: true
+    historicalWhyHe: "מס מקומי אמיתי המשולם במקום בסוף השהות."
+  - topicHe: "לינה — מלון מול דירה"
+    historicalWasHe: "דירה"
+    historicalOthersHe: "מיקה תמחרה מלונות: ₪13,000 בליביניו, ₪11,000 בססטרייר"
+    historicalNowHe: "דירה, במודע (פער של כ-€1,200 לשבוע)"
+    moved: false
+    historicalWhyHe: "בחירה מודעת במוצר: דירה עם מטבח חוסכת גם בלינה וגם בגמישות בארוחות."
+  - topicHe: "השכרת ציוד באיטליה, 4 סטים ל-6 ימים (סבב ראשון)"
+    historicalWasHe: "€605–645"
+    historicalOthersHe: "Gemini €430–550 · מיקה €430 בליביניו"
+    historicalNowHe: "€430–500"
+    moved: true
+    historicalWhyHe: "התאמה ראשונית מול שני המקורות לפני פירוט הדרגות של Claude."
+  - topicHe: "הדרכות בליביניו"
+    historicalWasHe: "€175 לאחת"
+    historicalOthersHe: "Gemini €250 לאחת"
+    historicalNowHe: "תעריף בית הספר הרשמי לשעתיים ביום"
+    moved: false
+    historicalWhyHe: "הבדל במוצר (שעתיים ביום מול שלוש שעות ביום)."
+  - topicHe: "תעריף Youth בליביניו"
+    historicalWasHe: "סומן לבדיקה"
+    historicalOthersHe: "Claude: €318.50 לגילאי 16–24 (−15%)"
+    historicalNowHe: "מדרגת Youth עודכנה למיקה וניצן"
+    moved: true
+    historicalWhyHe: "הנחה של כ-15% ממחיר מבוגר שהורידה את עלות המנויים בליביניו."
+  - topicHe: "זכאות בת ה-14 להנחת נוער בוויה לאטאה"
+    historicalWasHe: "4 מבוגרים עם הסתייגות"
+    historicalOthersHe: "Claude: רק ילידי 2018 ומעלה זכאים בססטרייר"
+    historicalNowHe: "מאושר שללא מדרגת Young בססטרייר"
+    moved: false
+    historicalWhyHe: "הכריע סתירה פנימית בדו״ח של Gemini."
+  - topicHe: "ביטוח בריאות לגאורגיה"
+    historicalWasHe: "לא נספר"
+    historicalOthersHe: "Claude: תנאי כניסה חוקי מ-1.1.2026 + Adventure Sports"
+    historicalNowHe: "תועד לפני ירידת גודאורי מהרשימה"
+    moved: true
+    historicalWhyHe: "דרישת כניסה חוקית עם קנס של 300 ₾."
+  - topicHe: "השכרת ציוד באיטליה — פער בין המקורות"
+    historicalWasHe: "€430–500"
+    historicalOthersHe: "Gemini ומיקה €430 · Claude €804–840 לפי חנות ודרגה"
+    historicalNowHe: "תומחר באמצע הטווח (ל-7 ימים: €680) + משימה להצעת מחיר אונליין"
+    moved: true
+    historicalWhyHe: "המחלוקת הפתוחה היחידה — הזמנה אונליין ב-Sport4U או Centrale סוגרת אותה ב-5 דקות."
+  - topicHe: "הדרכות בססטרייר"
+    historicalWasHe: "€300 לאחת"
+    historicalOthersHe: "Gemini €335 · Claude €190"
+    historicalNowHe: "€335 לפי מחירון Borgata לעונה גבוהה"
+    moved: false
+    historicalWhyHe: "מבוסס ישירות על דף התעריפים של בית הספר ולא על הערכה אחידה."
+  - topicHe: "מי מהחמישה לא גולשת"
+    historicalWasHe: "הנחנו: אחת הבנות הגדולות"
+    historicalOthersHe: "שלושת הניתוחים: ההורה השני"
+    historicalNowHe: "אורית — אושר על ידך"
+    moved: true
+    historicalWhyHe: "הכניס שתי בנות ל-Youth ואחת ל-Junior במקום מבוגר נוסף והוזיל את המנויים."
+  - topicHe: "מבצע Skipass Free בליביניו"
+    historicalWasHe: "לא ידענו עליו"
+    historicalOthersHe: "Claude: 7 לילות = סקי-פס חינם"
+    historicalNowHe: "לא תקף בסוף פברואר / מרץ (תקף רק בפתיחת וסיום עונה)"
+    moved: false
+    historicalWhyHe: "מונע ציפיית שווא — השבוע שלכם הוא שיא עונה."
+  - topicHe: "אורך מסלולים במונטרוזה"
+    historicalWasHe: "180 ק״מ"
+    historicalOthersHe: "Gemini: 132 ק״מ"
+    historicalNowHe: "180 ק״מ לפי המפעיל (132 ק״מ מדידת skiresort.info)"
+    moved: false
+    historicalWhyHe: "שני המספרים לגיטימיים בהתאם לשיטת המדידה."
+
+fit:
+  criteria:
+    - id: "beginners"
+      weight: 3
+      labelHe: "שלוש מתחילות"
+      whatHe: "שטח כחול רחב וסלחן, גני סקי קרובים ובית ספר מסודר"
+    - id: "non_skier"
+      weight: 3
+      labelHe: "אורית — 6 ימים בלי סקי"
+      whatHe: "כפר חי שאפשר למלא בו שבוע שלם: ספא, מדרחוב חנויות, הליכה ומפגשי צהריים"
+    - id: "evening"
+      weight: 2
+      labelHe: "ערב לשלוש בנות (14–20)"
+      whatHe: "עיירה מוארת וחיה לצאת אליה אחרי הסקי, לא רק לחזור לדירה"
+    - id: "transfer"
+      weight: 2
+      labelHe: "דלת לדלת עם הטיסות שהוזמנו"
+      whatHe: "נחיתה בשישי 08:35 והמראה בשבת 22:10 — בלי לשרוף אף יום גלישה"
+    - id: "advanced"
+      weight: 1
+      labelHe: "ראובן"
+      whatHe: "שטח אמיתי ומגוון לגולש מנוסה בזמן שהבנות בקורס"
+    - id: "snow"
+      weight: 2
+      labelHe: "ביטחון שלג בסוף פברואר"
+      whatHe: "גובה הכפר והפסגות, כיוון מדרונות וכיסוי השלגה מלאכותית"
+  scores:
+    livigno:
+      beginners:
+        n: 5
+        whyHe: "כחולים רחבים וגבוהים בשני צדי העמק, 70% השלגה מלאכותית וקורס ראשון–שישי צמוד לדירה"
+      non_skier:
+        n: 5
+        whyHe: "ספא Aquagranda, מדרחוב עם 250 חנויות פטורות ממכס, החלקה על קרח ואוטובוס חינם — הכפר העשיר מכולם"
+      evening:
+        n: 5
+        whyHe: "העיירה החיה והתוססת משלושת האתרים — בתי קפה, חנויות פתוחות ואנשים ברחוב בערב"
+      transfer:
+        n: 3
+        whyHe: "3:45 לכיוון (הארוך מהשלושה), אך עם טיסות אל על הוא נופל על שישי בצהריים ושבת אחה״צ בלי לפגוע בימי הסקי"
+      advanced:
+        n: 3
+        whyHe: "שני רכסים, פארק שלג אולימפי ופרירייד נחמד ב-Mottolino — מהנה לשבוע, פחות תלול מצרוויניה/ססטרייר"
+      snow:
+        n: 5
+        whyHe: "כפר בגובה 1,816 מ׳, פסגות ב-2,900 מ׳ ובסיס שלג בשיא העובי בסוף פברואר"
+    cervinia:
+      beginners:
+        n: 5
+        whyHe: "Plan Maison נחשב מאזורי הלימוד הטובים באלפים, עם כחולים ארוכים ומתונים (בכפוף לרוחות)"
+      non_skier:
+        n: 3
+        whyHe: "כפר קטן יחסית, אך כולל מעבר רכבל ייחודי לצרמט בשווייץ גם ללא מגלשיים"
+      evening:
+        n: 3
+        whyHe: "אפרה-סקי נעים ומסעדות טובות — פחות שוקק מליביניו, יותר חי מססטרייר"
+      transfer:
+        n: 5
+        whyHe: "כ-2:15 ממלפנסה — הנסיעה הקצרה והנוחה ביותר משדה התעופה"
+      advanced:
+        n: 4
+        whyHe: "ירידות ארוכות מאוד מ-3,480 מ׳ ואפשרות הרחבה ל-360 ק״מ עם צרמט"
+      snow:
+        n: 5
+        whyHe: "כפר ב-2,050 מ׳ וקרחון עד 3,480 מ׳ — השלג הבטוח ביותר באיטליה"
+    sestriere:
+      beginners:
+        n: 4
+        whyHe: "שטח כחול נוח סביב הכפר הגבוה עצמו, קרוב לפתח המגורים"
+      non_skier:
+        n: 3
+        whyHe: "כפר פונקציונלי משנות ה-70 — יש בריכה, ספא וכמה בוטיקים, אך פחות קסם אלפיני לאורית"
+      evening:
+        n: 3
+        whyHe: "רגוע באמצע השבוע ומתעורר בעיקר בסופי שבוע עם גולשים מטורינו"
+      transfer:
+        n: 4
+        whyHe: "כ-2:45 ממלפנסה רובו על אוטוסטרדה נוחה"
+      advanced:
+        n: 5
+        whyHe: "400 ק״מ מסלולים מחוברים ויום כלול בצרפת — המרחב הגדול ביותר לראובן"
+      snow:
+        n: 4
+        whyHe: "כפר גבוה (2,035 מ׳), אך חיבורים נמוכים ופונים דרום עם כיסוי השלגה חלקי"
+
+flags:
+  - resort: "livigno"
+    kind: "green"
+    textHe: "ליביניו אירחה את תחרויות הפריסטייל והסנובורד של אולימפיאדת מילאנו-קורטינה 2026 — התשתיות ופארק השלג בשיאם."
+  - resort: "livigno"
+    kind: "green"
+    textHe: "אזור פטור ממכס (Duty Free) עם כ-250 חנויות במדרחוב שטוח, ספא Aquagranda ואוטובוס סקי חינמי — אידיאלי לאורית ולבנות בערב."
+  - resort: "livigno"
+    kind: "green"
+    textHe: "הכפר בגובה {{ decided.baseM }} מ׳ והפסגה ב-{{ decided.topM }} מ׳ — ביטחון שלג מעולה בסוף פברואר."
+  - resort: "livigno"
+    kind: "red"
+    textHe: "נסיעה של {{ decided.transferHe }} ממלפנסה (ויותר בשלג כבד), אך בזכות שעות הטיסה היא לא נוגסת באף יום סקי."
+  - resort: "livigno"
+    kind: "red"
+    textHe: "הכניסה דרך מעבר Foscagno (2,291 מ׳) עלולה להתעכב בסופת שלג (חלופה דרך מנהרת Munt La Schera בשווייץ) — לכן שומרים מרווח ביטחון בטיסה חזרה."
+  - resort: "cervinia"
+    kind: "green"
+    textHe: "כפר ב-2,050 מ׳ ומסלולים עד 3,480 מ׳ — השלג הבטוח באיטליה ומדרונות כחולים ארוכים."
+  - resort: "cervinia"
+    kind: "green"
+    textHe: "Matterhorn Alpine Crossing מאפשר לחצות ברכבל לצרמט בשווייץ גם בלי סקי."
+  - resort: "cervinia"
+    kind: "red"
+    textHe: "חשיפה לרוחות חזקות שעלולות לסגור את המעליות העליונות ולהגביל את מרחב הגלישה."
+  - resort: "cervinia"
+    kind: "red"
+    textHe: "קור עז בגבהים של 2,500–3,500 מ׳ בסוף פברואר."
+  - resort: "cervinia"
+    kind: "red"
+    textHe: "הנחות Young ו-Junior נמכרות בקופה בלבד וללא מחירון מפורסם מראש אונליין."
+  - resort: "sestriere"
+    kind: "green"
+    textHe: "מרחב ויה לאטאה הענק (400 ק״מ) כולל יום גלישה במונז׳נבר הצרפתית."
+  - resort: "sestriere"
+    kind: "green"
+    textHe: "הכפר בגובה 2,035 מ׳ עם יציאה נוחה למסלולי המתחילים."
+  - resort: "sestriere"
+    kind: "red"
+    textHe: "אין מדרגת Young — מיקה וניצן משלמות תעריף מבוגר מלא."
+  - resort: "sestriere"
+    kind: "red"
+    textHe: "השלגה מלאכותית חלקית בלבד (כ-120 מתוך 400 ק״מ) וחיבורים נמוכים."
+  - resort: "sestriere"
+    kind: "red"
+    textHe: "אדריכלות מודרניסטית פונקציונלית משנות ה-70 — פחות קסם כפרי לאורית ולערבים."
+
+openItems:
+  - id: "apartment-questions"
+    titleHe: "לשלוח הודעה ל-Omar ב-Calanda (4 שאלות)"
+    urgency: "red"
+    deadline: "2026-10-31"
+    category: "stay"
+    targetAnchor: "#stay"
+    whatHe: "לברר מתי ואיך משלמים את היתרה ({{ apartment.balanceText }}) ואת המס העירוני (~{{ apartment.taxText }}); מאיזו שעה צ׳ק-אין בשבת והאם אפשר להשאיר מזוודות בבוקר ולצאת לגלוש; ומה כלול (מצעים, מגבות, ניקיון סופי)."
+  - id: "flight-seats"
+    titleHe: "לבחור מושבים צמודים לארבעת כרטיסי הנקודות"
+    urgency: "red"
+    deadline: "2026-11-01"
+    category: "flights"
+    targetAnchor: "#trip"
+    actionUrl: "https://www.elal.com/heb/passengersinfo/managemybooking"
+    actionLabelHe: "ניהול הזמנה באל על"
+    whatHe: "כרגע רק לראובן יש מושבים ({{ flights.reuvenSeatsHe }}). להיכנס בנפרד להזמנה של ניצן ולהזמנה של אורית, מיקה וגלי ולשריין מושבים סמוכים (ללא איחוד הזמנות)."
+  - id: "ski-school-book"
+    titleHe: "לרשום את מיקה, ניצן וגלי לקורס ב-Scuola Sci Centrale"
+    urgency: "amber"
+    deadline: "2026-12-15"
+    category: "ski"
+    targetAnchor: "#school"
+    actionUrl: "https://scuolascicentrale.it/adult-courses/?lang=en"
+    actionLabelHe: "הרשמה ב-Scuola Sci Centrale"
+    whatHe: "קורס קבוצתי למבוגרים (מגיל 14), {{ dates.courseSpanHe }} בשעות {{ dates.courseHoursText }} — ולהחליט האם לקחת דרכם גם את חבילת הציוד ({{ sim.centraleBundlePerBeginnerText }} במקום {{ decided.lessons.unitText }} לקורס בלבד). קבוצות מתחילים מתמלאות ראשונות."
+  - id: "transfer-book"
+    titleHe: "להזמין הסעה פרטית הלוך וחזור עם ביטול חינם"
+    urgency: "amber"
+    deadline: "2027-01-15"
+    category: "logistics"
+    targetAnchor: "#getting"
+    actionUrl: "https://city-airport-taxis.com/airporttransfers/reservations/taxi-from-Milan-Malpensa-Airport-to-Livigno"
+    actionLabelHe: "City Airport Taxis"
+    whatHe: "הלוך בשישי {{ dates.startDm }} מהנחיתה ב-{{ flights.out.arr }} עד {{ firstNight.name }} בליביניו (לציין טיסה {{ flights.out.flight }}, 5 מזוודות והמתנה ל-EES), וחזור בשבת {{ dates.endDm }} ב-{{ decided.leaveByHe }} מ-Calanda למלפנסה."
+  - id: "friday-cheaper"
+    titleHe: "לבדוק אם התפנה לילה ראשון זול יותר בתוך ליביניו"
+    urgency: "amber"
+    deadline: "2027-01-20"
+    category: "stay"
+    targetAnchor: "#friday-alts"
+    whatHe: "לחפש לליל שישי {{ dates.startDm }} אפשרות זולה מ-{{ firstNight.totalText }} לחמישה בתוך ליביניו או טרפאלה (עד 15 דק׳ מ-Calanda) עם ביטול חינם. אם נמצא: קודם להזמין את החדש ורק אז לבטל את {{ firstNight.name }} לפני {{ firstNight.freeCancelDm }}."
+  - id: "etias-check"
+    titleHe: "בדיקת סטטוס ETIAS לאירופה"
+    urgency: "amber"
+    deadline: "2027-01-31"
+    category: "docs"
+    targetAnchor: "#trip"
+    actionUrl: "https://www.eeas.europa.eu/eeas/coming-visa-free-country-and-travelling-europe_en"
+    actionLabelHe: "אתר האיחוד האירופי"
+    whatHe: "לבדוק בינואר האם חובת אישור ETIAS נכנסה לתוקף — ואם כן, למלא אונליין עבור כל חמשת הנוסעים ({{ world.etiasFeeText }} למבוגר)."
+  - id: "pass-age-bands"
+    titleHe: "אימות שנות לידה מול מדרגות Skipass Livigno"
+    urgency: "amber"
+    category: "ski"
+    targetAnchor: "#passes"
+    actionUrl: "https://www.skipasslivigno.com/en/livigno-skipass-rates/"
+    actionLabelHe: "מחירון Skipass Livigno"
+    whatHe: "לוודא את שנות הלידה המדויקות של מיקה, ניצן וגלי מול טבלת 2026/27 — הזכאות ל-Youth ול-Junior נקבעת לפי שנת לידה ולא לפי תאריך יום ההולדת."
+  - id: "pass-presale"
+    titleHe: "רכישת סקי-פס ל-{{ dates.skiDays }} ימים אונליין מראש"
+    urgency: "amber"
+    category: "ski"
+    targetAnchor: "#passes"
+    actionUrl: "https://www.skipasslivigno.com/en/livigno-skipass-rates/"
+    actionLabelHe: "רכישת מנויים אונליין"
+    whatHe: "להזמין מנויים ל-4 הגולשים מראש אונליין (זול מהקופה וחוסך תור בשבת הראשונה)."
+  - id: "piste-insurance"
+    titleHe: "וידוא כיסוי צד ג׳ חובה על הפיסטה"
+    urgency: "amber"
+    category: "docs"
+    targetAnchor: "#passes"
+    whatHe: "חובה לפי חוק באיטליה ({{ world.pisteLawHe }}). לוודא שפוליסת ביטוח הנסיעות שלכם כוללת אחריות צד ג׳ בגלישה באנגלית, או לסמן תוספת ביטוח (~{{ world.pisteDayPriceText }} ליום לגולש) במעמד רכישת הסקי-פס."
+  - id: "gear-quote"
+    titleHe: "סגירת הזמנת ציוד אונליין מראש (Sport4U מול Centrale)"
+    urgency: "amber"
+    category: "ski"
+    targetAnchor: "#school"
+    actionUrl: "https://www.sport4ulivigno.it/"
+    actionLabelHe: "אתר Sport4U"
+    whatHe: "להשוות הצעת מחיר סופית ל-{{ party.skiers }} סטים ל-{{ dates.skiDays }} ימים (כולל קסדות): Sport4U צמוד לדירה מול חבילת קורס+ציוד של Scuola Sci Centrale עם לוקרים על השלג."
+  - id: "insurance"
+    titleHe: "ביטוח נסיעות לחו״ל עם הרחבת ספורט חורף"
+    urgency: "yellow"
+    deadline: "2027-02-01"
+    category: "docs"
+    targetAnchor: "#budget"
+    whatHe: "לרכוש פוליסה לכל חמשת הנוסעים (עם הרחבת סקי וחילוץ מההר ל-4 הגולשים)."
+  - id: "last-day"
+    titleHe: "החלטה על תוכנית שבת האחרונה ({{ dates.endDm }})"
+    urgency: "yellow"
+    deadline: "2027-02-15"
+    category: "logistics"
+    targetAnchor: "#week"
+    whatHe: "לבחור בין בוקר גלישה אחרון עד ~{{ decided.lastSkiHe }} ומקלחת ב-Aquagranda, לבין יציאה מוקדמת ועצירה רגועה של שעתיים בורנה/בלאג׳ו על אגם קומו בדרך למלפנסה."
+  - id: "gear-check"
+    titleHe: "בדיקת ביגוד סקי וציוד אישי בבית"
+    urgency: "yellow"
+    category: "ski"
+    targetAnchor: "#r-livigno"
+    whatHe: "לבדוק מידות לכל החמישה: מעילים ומכנסי סקי, שכבות תרמיות, גרבי סקי, כפפות אטומות למים ומשקפי גלישה (Goggles) — לא נכללים בהשכרה."
+
+vaultAuth:
+  allowedEmails:
+    - "Reuven.sa@gmail.com"
+  googleClientId: ""
+  driveVaultFileId: ""
+
+liveMountain:
+  latitude: 46.5382
+  longitude: 10.1357
+  febBaselineVillageC: -4
+  febBaselineSummitC: -11
+  febSnowBaseCm: 145
+  webcams:
+    - id: "cam-carosello"
+      labelHe: "מצלמות Carosello 3000"
+      subHe: "הרכס המערבי והפסגה ב-2,797 מ׳ בשידור חי"
+      url: "https://www.carosello3000.com/en/mountain/webcams"
+    - id: "cam-mottolino"
+      labelHe: "מצלמות Mottolino"
+      subHe: "הרכס המזרחי, סנופארק והכפר מלמעלה"
+      url: "https://www.mottolino.com/en/winter/live/webcam/"
+    - id: "cam-village"
+      labelHe: "פנורמת הכפר 360°"
+      subHe: "מדרחוב ליביניו ומדרונות האימון בזמן אמת"
+      url: "https://www.livigno.eu/en/webcam"
+    - id: "lifts-live"
+      labelHe: "סטטוס רכבלים ומסלולים"
+      subHe: "אילו מעליות ופיסטות פתוחות הבוקר בעמק"
+      url: "https://www.skipasslivigno.com/en/lifts-and-slopes/"
+
+lunchMeetups:
+  - id: "meetup-centrale"
+    nameHe: "מרפסת השמש ב-Campo Scuola 23 / Tagliede"
+    nameEn: "Ristoro Tagliede & Centrale"
+    bestTimeHe: "13:05 — בדיוק בסיום השיעור של הבנות"
+    forSkierHe: "מיקה, ניצן וגלי מסיימות את הקורס ב-13:00 בדיוק בנקודה הזו; ראובן יורד בגלישה ישירה מרכס Carosello/Costaccia עד המדרחוב."
+    forOritHe: "4 דקות הליכה מישורית ונעימה מדירת Calanda או מבתי הקפה של Via Plan — אפס צורך ברכבל."
+    dishTipHe: "פסטה טרייה בשמש, מרק שעורה אלפיני (Orzo) ושוקו חם סמיך אחרי השיעור."
+    mapQuery: "Scuola Sci Centrale Via Plan Livigno"
+    url: "https://www.scuolascicentrale.com/en/"
+  - id: "meetup-carosello-top"
+    nameHe: "מסעדת הפסגה הפנורמית של Carosello 3000"
+    nameEn: "Rifugio Carosello 3000 Panoramic Terrace"
+    bestTimeHe: "יום שמש בהיר מהיום השלישי לקורס (13:15)"
+    forSkierHe: "ראובן והבנות נפגשים למעלה ונהנים מהמסלולים הכחולים הרחבים של הפסגה לפני הירידה."
+    forOritHe: "עלייה נוחה ויבשה עם כרטיס הולך רגל בגונדולה החדשה San Rocco ישר למרפסת הפנורמית בגובה 2,797 מ׳."
+    dishTipHe: "פיצוקרי מסורתי מהוולטלינה, פולנטה עם פטריות פורצ׳יני ונוף של 360 מעלות על האלפים."
+    mapQuery: "Carosello 3000 Livigno"
+    url: "https://www.carosello3000.com/en/"
+  - id: "meetup-latteria"
+    nameHe: "מחלבת ליביניו — Latteria di Livigno"
+    nameEn: "Latteria di Livigno"
+    bestTimeHe: "13:30–14:30 או אחה״צ של גלידה וגבינות"
+    forSkierHe: "ירידה קצרה לקצה הצפוני של העמק או הגעה ב-5 דקות באוטובוס הסקי החינמי עם המגלשיים."
+    forOritHe: "הליכה יפהפייה על טיילת השלג המישורית לצד הנהר לכיוון אגם ליביניו, או נסיעה קצרה בקו הצהוב/כחול."
+    dishTipHe: "פלטת גבינות אלפיניות שמיוצרות במקום, ברזאולה וגלידת יוגורט-פירות יער מפורסמת."
+    mapQuery: "Latteria di Livigno Via Pemont"
+    url: "https://www.latterialivigno.eu/"
+  - id: "meetup-calcheira"
+    nameHe: "בקתת העץ La Calcheira"
+    nameEn: "Ristorante La Calcheira"
+    bestTimeHe: "צהריים מאוחרים או ערב אלפיני חמים"
+    forSkierHe: "נסיעה קצרה באוטובוס החינמי בסוף הגלישה או מפגש רגוע אחרי החזרת הציוד לדירה."
+    forOritHe: "בקתת עץ כפרית יפהפייה בשולי היער, נגישה בשביל הליכה מושלג וכבוש או בקו החינמי."
+    dishTipHe: "בשרים על אבן חמה (Piöda), שאט (Sciatt — כדורי גבינה פריכים מכוסמת) וקינוחי תפוחים."
+    mapQuery: "Ristorante La Calcheira Livigno"
+
+culinaryAndShopping:
+  - id: "spot-camana-vegglia"
+    category: "dinner"
+    nameHe: "Camana Veglia — ערב וולטלינה אותנטי"
+    nameEn: "Ristorante Camana Veglia"
+    vibeHe: "בקתת עץ היסטורית מהמאה ה-17 עם תקרות קורות נמוכות ואווירה איטלקית חמה"
+    mustTryHe: "Pizzoccheri בעבודת יד, כדורי גבינה Sciatt ונתחי Bresaola מקומית"
+    bookingTipHe: "חובה להזמין שולחן לחמישה לפחות שבועיים מראש לימי שלישי/חמישי בערב"
+    mapQuery: "Ristorante Camana Veglia Livigno"
+  - id: "spot-bait-dal-ghet"
+    category: "dinner"
+    nameHe: "Bait Dal Ghet — במדרחוב ליד הדירה"
+    nameEn: "Bait Dal Ghet"
+    vibeHe: "טרטוריה משפחתית תוססת ופיצריה מעולה בתנור עצים — 3 דקות הליכה מ-Calanda"
+    mustTryHe: "פיצות קריספיות לבנות, פסטה בראגו אלפיני וטירמיסו ביתי"
+    bookingTipHe: "מעולה לערב שבת או ראשון כשרוצים ארוחה טעימה ממש מתחת לבית"
+    mapQuery: "Bait Dal Ghet Via Plan Livigno"
+  - id: "spot-costaccia"
+    category: "mountain"
+    nameHe: "Rifugio Costaccia — מרפסת שמש באמצע ההר"
+    nameEn: "Rifugio Costaccia 2360m"
+    vibeHe: "כסאות נוח בשמש מול הפסגות ממש מעל גונדולת Tagliede במרכז הכפר"
+    mustTryHe: "פולנטה מוקרמת, נקניקיות הרים ושטרודל תפוחים חם"
+    bookingTipHe: "אין צורך בהזמנה בצהריים — להגיע ב-12:15 לפני שיא העומס של 13:00"
+    mapQuery: "Rifugio Costaccia Livigno"
+  - id: "spot-mottolino-kosmo"
+    category: "apres"
+    nameHe: "Kosmo Taste the Mountain — בתחתית Mottolino"
+    nameEn: "Kosmo Mottolino"
+    vibeHe: "אפרה-סקי אלגנטי ונעים אחה״צ כשראובן יורד מהרכס המזרחי ואורית והבנות מצטרפות מהמדרחוב"
+    mustTryHe: "שוקו איטלקי סמיך לבנות, Bombardino חם עם קצפת ופוקאצ׳ות מחמצת"
+    bookingTipHe: "להגיע סביב 15:30–16:30 באור השקיעה על העמק"
+    mapQuery: "Kosmo Taste the Mountain Livigno"
+  - id: "spot-stalet"
+    category: "apres"
+    nameHe: "Stalet Après-Ski & Crêperie"
+    nameEn: "Alegra / Stalet Carosello 3000"
+    vibeHe: "מוזיקה שמחה ואווירת סקי חיה בתחתית Carosello 3000 עם דוכני קרפים חמים"
+    mustTryHe: "קרפ נוטלה חם בשלג ומשקאות חורף איטלקיים"
+    bookingTipHe: "נגיש ישירות בקו האוטובוס החינמי חזרה ל-Via Plan"
+    mapQuery: "Stalet Carosello 3000 Livigno"
+  - id: "spot-dutyfree"
+    category: "dutyfree"
+    nameHe: "שדרת הדיוטי-פרי — Via Plan & Via Ostaria"
+    nameEn: "Livigno Duty-Free Boulevard"
+    vibeHe: "מעל 250 חנויות פטורות ממע״מ איטלקי (22% חיסכון מובנה) ממש מתחת לדירת Calanda"
+    mustTryHe: "בישום וקוסמטיקה לבנות, משקפי שמש וביגוד סקי ממותג (Lungolivigno Fashion), שוקולד וקפה"
+    bookingTipHe: "לשמור קבלות ולשים לב למכסות המכס ביציאה מליביניו חזרה לשאר איטליה דרך מעבר Foscagno"
+    mapQuery: "Via Plan 99 Livigno"
+
+packingList:
+  - id: "pack-passports"
+    group: "docs"
+    labelHe: "5 דרכונים בתוקף + צילומים בטלפון ובענן"
+    noteHe: "לפחות חצי שנה תוקף · נדרש גם לאימות שנות לידה במנויי Youth/Junior"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+  - id: "pack-piste-liability"
+    group: "docs"
+    labelHe: "אישור ביטוח נסיעות + כיסוי צד ג׳ בגלישה באנגלית"
+    noteHe: "חובה להחזיק בטלפון על המסלולים באיטליה ({{ world.pisteLawHe }})"
+    forWho: ["reuven", "mika", "nitzan", "gali"]
+  - id: "pack-italy-plug"
+    group: "family_bag"
+    labelHe: "מתאמי חשמל איטלקיים (Type L — 3 פינים בשורה) + מפצל USB"
+    noteHe: "שקעים באיטליה שונים משקע ישראלי תלת-פיני — להביא 3 מתאמים ל-5 טלפונים"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+  - id: "pack-vacuum-bags"
+    group: "family_bag"
+    labelHe: "שקיות וואקום מתגלגלות (ללא שואב) למעילים ומכנסי סקי"
+    noteHe: "חוסכות 50% מנפח המזוודות של 23 ק״ג באל על"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+  - id: "pack-thermals"
+    group: "ski_wear"
+    labelHe: "3 סטים של חולצות ומכנסיים תרמיים מנדפי זיעה לכל גולש"
+    noteHe: "לא כותנה! שכבת בסיס חמה לבוקר של מינוס 8 מעלות"
+    forWho: ["reuven", "mika", "nitzan", "gali"]
+  - id: "pack-ski-socks"
+    group: "ski_wear"
+    labelHe: "גרבי סקי ייעודיים גבוהים (זוג אחד חלק בתוך נעל הסקי)"
+    noteHe: "לעולם לא ללבוש שני זוגות גרביים יחד בנעל סקי — גורם לשפשופים ולקור"
+    forWho: ["reuven", "mika", "nitzan", "gali"]
+  - id: "pack-goggles-gloves"
+    group: "ski_wear"
+    labelHe: "משקפי גלישה (Goggles) + כפפות סקי אטומות למים + חם-צוואר"
+    noteHe: "ציוד אישי שאינו מושכר בחנויות הסקי"
+    forWho: ["reuven", "mika", "nitzan", "gali"]
+  - id: "pack-spf50"
+    group: "family_bag"
+    labelHe: "קרם הגנה SPF50 לפנים + שפתון הגנה משמש ורוח"
+    noteHe: "הקרינה החוזרת מהשלג בגובה {{ decided.topM }} מ׳ חזקה במיוחד גם בימים קרים"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+  - id: "pack-aquagranda-swim"
+    group: "orit_spa"
+    labelHe: "בגדי ים, כפכפי בריכה וכובע ים (עבור Aquagranda)"
+    noteHe: "באיטליה חלק מהבריכות דורשות כפכפים ולעיתים כובע שחייה באזור הספורט; חלוק ניתן לשכור במקום"
+    forWho: ["orit", "reuven", "mika", "nitzan", "gali"]
+  - id: "pack-snow-boots"
+    group: "orit_spa"
+    labelHe: "מגפי חורף אטומים למים עם סוליה נגד החלקה לשלג בכפר"
+    noteHe: "קריטי להליכות של אורית במדרחוב ולכולם בערבים"
+    forWho: ["orit", "reuven", "mika", "nitzan", "gali"]
+  - id: "pack-powerbank"
+    group: "family_bag"
+    labelHe: "2 סוללות גיבוי (Power Bank) לטלפונים על ההר"
+    noteHe: "סוללות אייפון ואנדרואיד מתרוקנות מהר בקור אלפיני — לשמור בכיס פנימי חם"
+    forWho: ["reuven", "orit", "mika", "nitzan", "gali"]
+  - id: "pack-daypack"
+    group: "family_bag"
+    labelHe: "תיק גב קטן וקל לגלישה + בקבוק מים רב-פעמי וחטיפי אנרגיה"
+    noteHe: "נוח לשכבת פליז נוספת ולהפסקות עם הבנות בין המסלולים"
+    forWho: ["reuven", "mika", "nitzan", "gali"]
+
+fieldKit:
+  skiBusLines:
+    - id: "bus-blue"
+      colorNameHe: "הקו הכחול (Linea Blu)"
+      badgeHex: "#1B62C6"
+      routeHe: "חוצה את מרכז ליביניו לאורך העמק בין רכס Mottolino לרכס Carosello 3000"
+      tipForFamilyHe: "חינם לגמרי ללא כרטיס! עוצר דקות ספורות מדירת Calanda ומחבר אתכם לשני צדי ההר ולמחלבה."
+    - id: "bus-red"
+      colorNameHe: "הקו האדום (Linea Rossa)"
+      badgeHex: "#C8102E"
+      routeHe: "קו מהיר לאורך הציר המרכזי מ-Forcola בדרום ועד אזור האגם בצפון"
+      tipForFamilyHe: "מצוין למעבר המהיר בשבת בבוקר מ-Casa Noemi (Via Li Caprena) לאזור המרכז אם לא לוקחים מונית קצרה."
+    - id: "bus-yellow"
+      colorNameHe: "הקו הצהוב (Linea Gialla)"
+      badgeHex: "#D99B00"
+      routeHe: "מחבר את מרכז הכפר, המדרחוב ומתחם הספא Aquagranda בתדירות גבוהה"
+      tipForFamilyHe: "הקו הכי שימושי לאורית להגעה יבשה וחמה ל-Aquagranda ולמפגשי צהריים."
+    - id: "bus-green"
+      colorNameHe: "הקו הירוק (Linea Verde)"
+      badgeHex: "#1B7F5A"
+      routeHe: "משרת את האזור המערבי ומעליות המשנה לאורך מורדות Carosello"
+      tipForFamilyHe: "נוח לחזרה מנקודות גלישה דרומיות בסוף היום ישר למרכז הכפר."
+  emergencyContacts:
+    - id: "em-112"
+      labelHe: "מוקד חירום אירופאי וחילוץ מסלולים (Soccorso Piste)"
+      phoneDisplay: "112"
+      telHref: "tel:112"
+      noteHe: "פעיל מכל טלפון גם ללא קליטת מפעיל מקומי — ציינו את מספר הפיסטה והרכבל הקרוב"
+    - id: "em-calanda"
+      labelHe: "Omar Castellani — מארח דירת Appartamenti Calanda"
+      phoneDisplay: "+39 0342 970092"
+      telHref: "tel:+390342970092"
+      noteHe: "זמין בשיחה וב-WhatsApp לתיאום שמירת מזוודות בשבת בבוקר וצ׳ק-אין (Via Pontiglia 295)"
+    - id: "em-guardia"
+      labelHe: "מרפאת תיירים בליביניו (Casa della Salute)"
+      phoneDisplay: "+39 0342 991811"
+      telHref: "tel:+390342991811"
+      noteHe: "Via Freita 1521 — מרפאה ומוקד רפואי מסודר בתוך ליביניו"
+    - id: "em-apt-info"
+      labelHe: "לשכת התיירות הרשמית של ליביניו (APT Livigno)"
+      phoneDisplay: "+39 0342 977800"
+      telHref: "tel:+390342977800"
+      noteHe: "מידע בזמן אמת על מצב מעבר ההרים Foscagno, אוטובוסים ואירועים בכפר"
+  italianPhrases:
+    - it: "Buongiorno, abbiamo una prenotazione a nome Sayag"
+      phoneticHe: "בּוּאוֹנְג׳וֹרְנוֹ, אַבְּיָאמוֹ אוּנָה פְּרֶנוֹטַצְיוֹנֶה אָה נוֹמֶה סַיָאג"
+      meaningHe: "בוקר טוב, יש לנו הזמנה על שם סייג"
+      contextHe: "בכניסה לדירות, להשכרת הציוד ולמסעדות"
+    - it: "Possiamo lasciare le valigie qui fino al check-in?"
+      phoneticHe: "פּוֹסְיָאמוֹ לַשָׁארֶה לֶה וַלִיג׳ֶה קְוִוי פִינוֹ אַל צ׳ק-אין?"
+      meaningHe: "אפשר להשאיר כאן את המזוודות עד הצ׳ק-אין?"
+      contextHe: "בשישי בצהריים ב-Casa Noemi ובשבת בבוקר ב-Calanda"
+    - it: "Tre corsi collettivi principianti, per favore"
+      phoneticHe: "טְרֶה קוֹרְסִי קוֹלֶטִיבִי פְּרִינְצ׳יפְּיַאנְטִי, פֶּר פַבוֹרֶה"
+      meaningHe: "שלושה קורסים קבוצתיים למתחילים, בבקשה"
+      contextHe: "בדלפק בית הספר Scuola Sci Centrale"
+    - it: "Un biglietto andata e ritorno per pedoni"
+      phoneticHe: "אוּן בִּילְיֶיטוֹ אַנְדָאטָה אֶה רִיטוֹרְנוֹ פֶּר פֶּדוֹנִי"
+      meaningHe: "כרטיס הלוך-חזור להולך רגל (ללא סקי)"
+      contextHe: "לאורית בקופת הרכבל של Carosello 3000 או Tagliede"
+    - it: "Un tavolo per cinque persone, per favore"
+      phoneticHe: "אוּן טָאבוֹלוֹ פֶּר צ׳ינְקְוֶוה פֶּרְסוֹנֶה, פֶּר פַבוֹרֶה"
+      meaningHe: "שולחן לחמישה אנשים, בבקשה"
+      contextHe: "במסעדות בהר ובערב במדרחוב"
+    - it: "Il conto, per favore — possiamo pagare con carta?"
+      phoneticHe: "אִיל קוֹנְטוֹ פֶּר פַבוֹרֶה — פּוֹסְיָאמוֹ פַּגָארֶה קוֹן קַארְטָה?"
+      meaningHe: "אפשר חשבון בבקשה — ניתן לשלם בכרטיס אשראי?"
+      contextHe: "בסיום ארוחה או בחנויות"
+    - it: "Dov'è la fermata dello skibus gratuito?"
+      phoneticHe: "דוֹבֶה לָה פֶרְמָאטָה דֶלוֹ סְקִי-בּוּס גְרַטוּאִיטוֹ?"
+      meaningHe: "איפה התחנה של אוטובוס הסקי החינמי?"
+      contextHe: "להתמצאות מהירה בעמק"
+    - it: "Una cioccolata calda densa con panna!"
+      phoneticHe: "אוּנָה צ׳וֹקוֹלָטָה קַלְדָה דֶנְסָה קוֹן פַּאנָה!"
+      meaningHe: "שוקו חם סמיך עם קצפת!"
+      contextHe: "המשפט הכי חשוב לבנות בהפסקת הצהריים"
+
+dailyPlanCards:
+  - id: "day-fri-arrival"
+    tabLabelHe: "שישי · נחיתה"
+    dateBadgeHe: "26.2 · יום 1"
+    titleHe: "נחיתת בוקר במלפנסה ונסיעה אלפינית לליביניו"
+    summaryHe: "ממריאים ב-{{ flights.out.flight }} ({{ flights.out.dep }}), נוחתים ב-{{ flights.out.arr }} במילאנו ועולים בהסעה פרטית דרך עמק הוולטלינה ומעבר Foscagno ישר לתוך ליביניו (~{{ decided.arriveHe }})."
+    reuvenTrackHe: "איסוף הקבוצה במלפנסה, קבלת מפתחות ב-{{ firstNight.name }} ובדיקת מיקום חנות Sport4U ובית הספר Centrale במדרחוב."
+    girlsTrackHe: "מנוחה מטיסת הלילה, סיבוב היכרות ראשון בשלג ובחנויות של ליביניו וארוחת פיצות מוקדמת."
+    oritTrackHe: "התמקמות רגועה ב-{{ firstNight.name }}, קפה איטלקי ראשון מול הפסגות ושינה מוקדמת לפני שבוע החופשה."
+    meetupHe: "כל החמישה יחד כל היום — ארוחת ערב ראשונה ורגועה קרוב ל-Via Li Caprena."
+  - id: "day-sat-warmup"
+    tabLabelHe: "שבת · חימום"
+    dateBadgeHe: "27.2 · יום 2"
+    titleHe: "מעבר ל-Calanda, התאמת ציוד ויום שלג ראשון בלי לחץ"
+    summaryHe: "בזמן שכל האלפים עומדים בפקקי השבת, אתם כבר בתוך העמק! משאירים מזוודות ב-Appartamenti Calanda, אוספים ציוד ב-Sport4U הצמודה וחונכים את המנוי ל-{{ dates.skiDays }} ימים."
+    reuvenTrackHe: "סיוע לבנות בהתאמת נעליים וקסדות ב-Sport4U, שעה משותפת על מסלול המתחילים ואז גיחה ראשונה לפסגות."
+    girlsTrackHe: "הכרת הנעליים והמגלשיים על השטיח הנע והמסלול הכחול המתון ליד הדירה — נותן ביטחון אדיר לפני פתיחת הקורס מחר!"
+    oritTrackHe: "הליכת בוקר במדרחוב המושלג Via Plan, קבלת דירת SOLE אחה״צ וקנייה מסודרת בסופר עם כולם."
+    meetupHe: "צהריים משותפים במרפסת השמש של מרכז הכפר (4 דקות הליכה מהדירה) + התמקמות בדירת Calanda."
+  - id: "day-sun-fri-core"
+    tabLabelHe: "א׳–ו׳ · לב החופשה"
+    dateBadgeHe: "28.2–5.3 · ימים 3–8"
+    titleHe: "{{ dates.courseDays }} ימי קורס, מרחבי גלישה וספא מול ההרים"
+    summaryHe: "השגרה המושלמת של השבוע: בקרים חופשיים לפי הקצב של כל אחד, קורס צהריים לבנות ב-Campo Scuola 23 ({{ dates.courseHoursText }}), ומפגש צהריים משפחתי בשעה 13:05!"
+    reuvenTrackHe: "גלישת בוקר חזקה על מסלולים אדומים ושחורים ב-Mottolino וב-Carosello 3000; מיום רביעי גלישת אחה״צ משותפת עם הבנות על כחולים ארוכים."
+    girlsTrackHe: "חימום בוקר קליל, שיעור קבוצתי {{ dates.courseHoursText }} ב-Scuola Sci Centrale ממש ליד הבית, ואחה״צ תרגול כיפי או קניות במדרחוב."
+    oritTrackHe: "בקרים רגועים של בריכות אדים חמות וסאונות פנורמיות ב-Aquagranda, טיול שמש למחלבת Latteria ועלייה בגונדולה לתצפית הפסגה."
+    meetupHe: "כל יום ב-13:05 במרפסת Tagliede/Centrale בסיום הקורס — וביום שמש בהיר מפגש פסגה ב-Carosello 3000 או במחלבת Latteria!"
+  - id: "day-sat-return"
+    tabLabelHe: "שבת · סיום וחזרה"
+    dateBadgeHe: "6.3 · יום 9"
+    titleHe: "בוקר אחרון בעמק (או אגם קומו) וטיסת לילה הביתה"
+    summaryHe: "צ׳ק-אאוט מדירת Calanda בבוקר. יציאה מליביניו עד {{ decided.leaveByHe }} כדי להתייצב במלפנסה עד {{ flights.back.airportByClock }} לטיסת {{ flights.back.flight }} ({{ flights.back.dep }})."
+    reuvenTrackHe: "אפשרות א׳: גלישת בוקר אחרונה עד ~{{ decided.lastSkiHe }} ומקלחת ב-Aquagranda · אפשרות ב׳: טיול רגוע עם כולם על שפת אגם קומו."
+    girlsTrackHe: "סיבוב מזכרות ושוקולד אחרון במדרחוב Via Plan או עצירה בורנה (Varenna) הציורית בדרך לשדה."
+    oritTrackHe: "בוקר רגוע של קפה ואריזות אחרונות, ונסיעת נוף יפהפייה באור יום לאורך אגם קומו למילאנו."
+    meetupHe: "נחיתה בנתב״ג ביום ראשון לפנות בוקר ב-{{ flights.back.arr }}."

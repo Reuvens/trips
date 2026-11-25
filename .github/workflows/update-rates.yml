@@ -1,0 +1,74 @@
+name: Auto-Update Daily Euro Exchange Rate
+
+on:
+  schedule:
+    # Runs automatically every day at 07:00 UTC (after ECB daily reference rate update)
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update-euro-rate:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit_fx.outputs.changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch latest ECB EUR/ILS exchange rate & rebuild
+        run: |
+          npm run update:rates
+          npm run build
+          npm run check
+          npm test
+
+      - name: Commit updated rate if changed
+        id: commit_fx
+        run: |
+          if [[ -n "$(git status --porcelain data/rates.yaml dist/)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/rates.yaml dist/
+            git commit -m "chore(fx): auto-update daily EUR/ILS ECB exchange rate"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "EUR/ILS exchange rate unchanged."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload Pages artifact when rate changed
+        if: steps.commit_fx.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy-pages:
+    if: needs.update-euro-rate.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+    needs: update-euro-rate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy updated exchange rate directly to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

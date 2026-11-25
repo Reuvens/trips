@@ -1,0 +1,35 @@
+{
+  "name": "family-trips",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "מנוע תכנון ושטח רב-טיולי למשפחת סייג (Reuvens/trips) — מוח משותף אחד (src/) ותיקיית נתונים מבודדת לכל טיול (trips/<slug>/)",
+  "scripts": {
+    "new-trip": "tsx scripts/newTrip.ts",
+    "update:rates": "tsx scripts/updateRates.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsx scripts/build.ts",
+    "build:check": "tsx scripts/build.ts --check",
+    "check": "npm run typecheck && tsx scripts/runChecks.ts",
+    "check:coverage": "tsx scripts/runChecks.ts --coverage",
+    "status": "tsx scripts/status.ts",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "ship": "npm run update:rates && npm run build && npm run check && npm test && npm run test:e2e",
+    "preview": "npx vite preview --outDir dist --port 4173 --host 0.0.0.0"
+  },
+  "dependencies": {
+    "yaml": "^2.6.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.24.2",
+    "jsdom": "^25.0.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8"
+  }
+}

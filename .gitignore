@@ -1,0 +1,21 @@
+# Dependencies & build caches
+node_modules/
+dist-tsc/
+test-results/
+playwright-report/
+.playwright-cache/
+
+# SECURITY: Private booking identifiers, PINs, vault keys, and personal phones NEVER enter git!
+# Applies automatically to ALL trips in trips/<slug>/ (see trips/_template/*.example*).
+trips/*/private.yaml
+trips/*/vault.pin
+trips/*/drive-vault.encrypted.json
+data/private.yaml
+data/vault.pin
+data/drive-vault.encrypted.json
+
+# Environment & OS files
+.env
+.env.*
+.DS_Store
+*.log

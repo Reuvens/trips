@@ -1,0 +1,22 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# תבנית דוגמה לקובץ מזהים פרטיים (data/private.yaml מוחרג ב-.gitignore!)
+# הקובץ האמיתי data/private.yaml נשמר מקומית בלבד ולעולם לא נכנס ל-Git או לדף הציבורי.
+# בדיקה S1 מוודאת שאף ערך מקובץ data/private.yaml לא מופיע בשום תוצר בנוי.
+# ═══════════════════════════════════════════════════════════════════════════
+ski_pnr_reuven: "EXAMPLE_PNR_REUVEN"
+ski_pnr_nitzan: "EXAMPLE_PNR_NITZAN"
+ski_pnr_three: "EXAMPLE_PNR_THREE"
+ticket_reuven: "114-0000000001"
+ticket_nitzan: "114-0000000002"
+ticket_orit: "114-0000000003"
+ticket_mika: "114-0000000004"
+ticket_gali: "114-0000000005"
+matmid: "EXAMPLE_MATMID_ID"
+ff_on_ticket_orit: "EXAMPLE_FF_ORIT"
+casa_noemi_conf: "EXAMPLE_BOOKING_CONF"
+casa_noemi_pin: "9999"
+casa_noemi_phone: "+39 000 0000000"
+calanda_auth: "EXAMPLE_CALANDA_AUTH"
+redemption_refs:
+  - "EXAMPLE_REDEMPTION_01"
+  - "EXAMPLE_REDEMPTION_02"

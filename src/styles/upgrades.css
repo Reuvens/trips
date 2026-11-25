@@ -1,0 +1,1181 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIVIGNO 2027 V3 — UPGRADE WIDGETS + DUAL SITE DESIGN SYSTEMS
+   1) Shared Practical Widgets (Weather, Day Deck, Meetups, Packing, Vault, Kit)
+   2) Site 1: Mobile-First Companion App (body[data-site-variant="app"])
+   3) Site 2: Editorial Luxury Alpine Magazine (body[data-site-variant="magazine"])
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[hidden] {
+  display: none !important;
+}
+
+/* ─── Shared Avatar Personalizer Bar (Flush-Right Wrapped, Non-Sticky!) ─── */
+.avatar-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0 6px;
+  width: 100%;
+  max-width: 100%;
+}
+.avatar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px 4px 5px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 36px;
+  transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+}
+.avatar-pill:hover {
+  border-color: var(--accent);
+}
+.avatar-pill.is-active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  box-shadow: 0 3px 10px rgba(27, 98, 198, 0.22);
+}
+.av-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+.av-all { background: #1b4b3a; }
+.av-black { background: #1e293b; }
+.av-blue { background: #1b62c6; }
+.av-none { background: #b7791f; }
+
+.member-spotlight {
+  margin: 6px 0 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1.5px solid var(--accent);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.42;
+}
+.ms-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+.ms-copy {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.ms-copy small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.ms-close-btn {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ms-close-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 520px) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+/* ─── Snow Mode 4-Tile Quick Cockpit ─── */
+.snow-cockpit {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+@media (max-width: 760px) {
+  .snow-cockpit {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.sc-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 13px 14px;
+  border-radius: 16px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.14s ease, border-color 0.14s ease;
+}
+.sc-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.sc-icon {
+  font-size: 21px;
+  line-height: 1.1;
+}
+.sc-tile b {
+  font-size: 15px;
+  font-weight: 800;
+}
+.sc-tile small {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.3;
+}
+
+/* ─── Live Weather, Snow & Webcams Hub ─── */
+.weather-hub {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+}
+.wh-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.wh-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+@media (max-width: 720px) {
+  .wh-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.wh-metric {
+  background: var(--snow);
+  border: 1px solid var(--line-soft);
+  border-radius: 13px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.wh-metric span {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.wh-metric b {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.wh-metric small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.webcam-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 640px) {
+  .webcam-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.webcam-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--snow);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.webcam-card:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.webcam-card b {
+  display: block;
+  font-size: 14.5px;
+}
+.webcam-card span {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+/* ─── Interactive Day-by-Day Split Deck ─── */
+.day-deck {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  margin: 18px 0;
+  box-shadow: var(--shadow-sm);
+}
+.day-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+@media (max-width: 680px) {
+  .day-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.day-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  background: var(--snow);
+  color: var(--ink);
+  font-family: var(--sans);
+  cursor: pointer;
+  text-align: right;
+  transition: all 0.15s ease;
+}
+.day-tab .day-badge {
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.day-tab b {
+  font-size: 14.5px;
+  font-weight: 800;
+}
+.day-tab.is-active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.day-tab.is-active .day-badge {
+  color: var(--accent-ink);
+  opacity: 0.86;
+}
+.dp-head h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 6px 0 4px;
+}
+.dp-head p {
+  margin: 0 0 14px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.dp-tracks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 780px) {
+  .dp-tracks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.dp-track {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--snow);
+  border: 1.5px solid var(--line-soft);
+  transition: opacity 0.18s ease, border-color 0.18s ease;
+}
+.dp-track.is-highlighted {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.dp-track.is-dimmed {
+  opacity: 0.48;
+}
+.dp-track-tag {
+  font-size: 13.5px;
+  font-weight: 800;
+  margin-bottom: 5px;
+  color: var(--ink);
+}
+.dp-track p {
+  margin: 0;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+.dp-meetup {
+  margin-top: 12px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: var(--ok-soft, rgba(27, 127, 90, 0.1));
+  border: 1px solid var(--line);
+  font-size: 14.5px;
+}
+
+/* ─── Lunch Meetups Photo Showcase ─── */
+.meetup-showcase {
+  margin: 24px 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  box-shadow: var(--shadow-sm);
+}
+.ms-banner {
+  display: grid;
+  grid-template-columns: 1.05fr 1.2fr;
+  align-items: center;
+  background: var(--snow);
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 780px) {
+  .ms-banner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ms-banner img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+.ms-banner-copy {
+  padding: 20px 22px;
+}
+.ms-banner-copy h3 {
+  font-size: 21px;
+  font-weight: 800;
+  margin: 8px 0 6px;
+}
+.ms-banner-copy p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.meetup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+@media (max-width: 760px) {
+  .meetup-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.meetup-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--snow);
+}
+.mc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mc-head h4 {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0;
+}
+.mc-split {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14.2px;
+  color: var(--ink-2);
+}
+
+/* ─── Culinary & Packing Studio ─── */
+.culinary-block,
+.packing-studio {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  margin: 20px 0;
+}
+.cb-head,
+.ps-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.cb-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ps-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+.ps-bar-track {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--snow);
+  border: 1px solid var(--line-soft);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.ps-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1b7f5a, #1b62c6);
+  transition: width 0.22s ease;
+}
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 720px) {
+  .pack-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.pack-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line-soft);
+  background: var(--snow);
+  cursor: pointer;
+  transition: border-color 0.14s ease, opacity 0.14s ease;
+}
+.pack-item:hover {
+  border-color: var(--accent);
+}
+.pack-item.is-packed {
+  opacity: 0.62;
+}
+.pack-item.is-packed b {
+  text-decoration: line-through;
+}
+.pack-item.is-member-focus {
+  border-color: var(--accent);
+}
+.pack-chk {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.pack-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pack-body b {
+  font-size: 14.8px;
+}
+.pack-body small {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* ─── Field Kit (Ski Bus, Emergency & Italian Phrasebook) ─── */
+.bus-list,
+.em-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bus-row,
+.em-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.bus-row:last-child,
+.em-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.bus-pill {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.bus-row b,
+.em-row b {
+  display: block;
+  font-size: 14.5px;
+}
+.bus-row small,
+.em-row small {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.phrase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 680px) {
+  .phrase-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.phrase-card {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+/* ─── Encrypted Family Vault ─── */
+.vault-card {
+  background: var(--paper);
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: var(--shadow-sm);
+}
+.vault-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.gsi-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.vault-form {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr auto;
+  gap: 10px;
+  align-items: end;
+}
+@media (max-width: 720px) {
+  .vault-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.vf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.vf-field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.vf-field input {
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  background: var(--snow);
+  color: var(--ink);
+  font-size: 15px;
+}
+.vault-feedback {
+  margin: 10px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.vault-feedback.is-err {
+  color: var(--alert);
+}
+.vault-feedback.is-ok {
+  color: var(--ok);
+}
+.vault-unlocked-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+@media (max-width: 740px) {
+  .vault-unlocked-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.vc-secret-card {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: var(--snow);
+}
+.vc-secret-card h4 {
+  margin: 4px 0 2px;
+  font-size: 16.5px;
+  font-weight: 800;
+}
+.vc-field-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--line-soft);
+  font-size: 14px;
+}
+.vc-copy-btn {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ─── Photo Visual Banner Cards ─── */
+.photo-feature-split {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 18px;
+  align-items: center;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 18px 0 22px;
+}
+@media (max-width: 780px) {
+  .photo-feature-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.photo-feature-split img {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  max-height: 330px;
+  object-fit: cover;
+  display: block;
+}
+.photo-feature-copy {
+  padding: 20px 22px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SITE VARIANT 1: MOBILE-FIRST COMPANION APP ([data-site-variant="app"])
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-site-variant="app"] {
+  --accent: #1b62c6;
+  --accent-ink: #ffffff;
+  --accent-soft: #e0ecfb;
+}
+html[data-theme="dark"] [data-site-variant="app"] {
+  --accent: #7ab0f7;
+  --accent-ink: #0a1624;
+  --accent-soft: #17324f;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) [data-site-variant="app"] {
+    --accent: #7ab0f7;
+    --accent-ink: #0a1624;
+    --accent-soft: #17324f;
+  }
+}
+
+body[data-site-variant="app"] {
+  padding-bottom: 78px;
+}
+[data-site-variant="app"] .app-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+[data-site-variant="app"] .app-header-top {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 6px 14px;
+  min-height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+[data-site-variant="app"] .app-logo {
+  font-family: var(--display);
+  font-size: 20px;
+  line-height: 1.1;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+[data-site-variant="app"] .app-scroll-intro {
+  max-width: 1050px;
+  margin: 10px auto 4px;
+  padding: 0 16px;
+}
+[data-site-variant="app"] .app-subbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+[data-site-variant="app"] .edition-switch-link,
+.mag-switch-pill {
+  font-size: 12.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--snow);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+[data-site-variant="app"] .app-hero-card {
+  max-width: 1050px;
+  margin: 10px auto 6px;
+  padding: 0 16px;
+}
+[data-site-variant="app"] .app-hero-inner {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  min-height: 220px;
+  display: flex;
+  align-items: flex-end;
+  border: 1.5px solid var(--line);
+  box-shadow: var(--shadow-md);
+}
+[data-site-variant="app"] .app-hero-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+[data-site-variant="app"] .app-hero-overlay {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 22px 18px 18px;
+  background: linear-gradient(to top, rgba(8, 20, 34, 0.92) 0%, rgba(8, 20, 34, 0.54) 64%, rgba(8, 20, 34, 0.14) 100%);
+  color: #ffffff;
+  text-align: right;
+}
+[data-site-variant="app"] .app-hero-kicker {
+  display: block;
+  font-size: 13px;
+  color: #93c5fd;
+  font-weight: 700;
+  text-align: right;
+}
+[data-site-variant="app"] .app-hero-overlay h1 {
+  font-family: var(--display);
+  font-size: clamp(26px, 5vw, 42px);
+  line-height: 1.1;
+  margin: 4px 0 6px;
+  color: #ffffff;
+  text-align: right;
+}
+[data-site-variant="app"] .app-hero-overlay p {
+  margin: 0;
+  font-size: 14.8px;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 68ch;
+  text-align: right;
+}
+[data-site-variant="app"] .app-tab-pane:not(.is-active) {
+  display: none;
+}
+@media print {
+  [data-site-variant="app"] .app-tab-pane {
+    display: block !important;
+  }
+  .app-bottom-dock {
+    display: none !important;
+  }
+}
+.app-bottom-dock {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  z-index: 95;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(16px);
+  border-top: 1.5px solid var(--line);
+  box-shadow: 0 -6px 24px rgba(15, 35, 56, 0.1);
+}
+.app-dock-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px));
+  gap: 3px;
+}
+.app-dock-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 5px 2px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 46px;
+  min-width: 0;
+}
+.app-dock-btn .dock-ico {
+  font-size: 18px;
+  line-height: 1.05;
+}
+.app-dock-btn.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 800;
+}
+html[data-theme="dark"] .app-dock-btn.is-active {
+  background: rgba(116, 179, 255, 0.18);
+  color: #8cc2ff;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .app-dock-btn.is-active {
+    background: rgba(116, 179, 255, 0.18);
+    color: #8cc2ff;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SITE VARIANT 2: EDITORIAL LUXURY ALPINE MAGAZINE ([data-site-variant="magazine"])
+   ═══════════════════════════════════════════════════════════════════════════ */
+body[data-site-variant="magazine"],
+.rtl-root[data-site-variant="magazine"] {
+  --ground: #f6f1e9;
+  --snow: #f6f1e9;
+  --paper: #fffdf9;
+  --surface: #fffdf9;
+  --surface-2: #efe7db;
+  --surface-3: #e4d9c8;
+  --ink: #14241f;
+  --ink-2: #354a43;
+  --muted: #5b6f68;
+  --line: #dcd3c4;
+  --line-soft: #eae3d7;
+  --accent: #9e472a;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(158, 71, 42, 0.11);
+  --ok: #1b4b3a;
+  --ok-soft: #dcece5;
+  --warn: #785000;
+  --warn-soft: #fff1c7;
+  --alert: #c8102e;
+  --alert-soft: #fce4e8;
+  --p-black-grade: #14241f;
+  --svg-ink: #14241f;
+  background: var(--snow);
+  color: var(--ink);
+}
+html[data-theme="dark"] body[data-site-variant="magazine"],
+html[data-theme="dark"] .rtl-root[data-site-variant="magazine"] {
+  --ground: #101715;
+  --snow: #101715;
+  --paper: #17211e;
+  --surface: #17211e;
+  --surface-2: #21302b;
+  --surface-3: #2b3d37;
+  --ink: #f5f0e6;
+  --ink-2: #d2cbc0;
+  --muted: #9aa8a1;
+  --line: #3b4f48;
+  --line-soft: #263631;
+  --accent: #f0a868;
+  --accent-ink: #101715;
+  --accent-soft: rgba(240, 168, 104, 0.16);
+  --ok: #7fd4ad;
+  --ok-soft: #133327;
+  --warn: #f4b61a;
+  --warn-soft: #3a2d0b;
+  --alert: #ff8596;
+  --alert-soft: #3c1821;
+  --p-black-grade: #f5f0e6;
+  --svg-ink: #f5f0e6;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) body[data-site-variant="magazine"],
+  html:not([data-theme="light"]) .rtl-root[data-site-variant="magazine"] {
+    --ground: #101715;
+    --snow: #101715;
+    --paper: #17211e;
+    --surface: #17211e;
+    --surface-2: #21302b;
+    --surface-3: #2b3d37;
+    --ink: #f5f0e6;
+    --ink-2: #d2cbc0;
+    --muted: #9aa8a1;
+    --line: #3b4f48;
+    --line-soft: #263631;
+    --accent: #f0a868;
+    --accent-ink: #101715;
+    --accent-soft: rgba(240, 168, 104, 0.16);
+    --ok: #7fd4ad;
+    --ok-soft: #133327;
+    --warn: #f4b61a;
+    --warn-soft: #3a2d0b;
+    --alert: #ff8596;
+    --alert-soft: #3c1821;
+    --p-black-grade: #f5f0e6;
+    --svg-ink: #f5f0e6;
+  }
+}
+[data-site-variant="magazine"] .mag-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+[data-site-variant="magazine"] .mag-topbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6px 14px;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+[data-site-variant="magazine"] .mag-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+[data-site-variant="magazine"] .mag-brand {
+  font-family: 'Frank Ruhl Libre', var(--display);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mag-switch-mobile {
+  display: none;
+}
+@media (max-width: 640px) {
+  .mag-switch-pill {
+    display: none;
+  }
+  .mag-switch-mobile {
+    display: inline-flex;
+  }
+}
+[data-site-variant="magazine"] .mag-chapters-nav {
+  display: flex;
+  gap: 14px;
+  min-width: 0;
+}
+[data-site-variant="magazine"] .mag-chapters-nav a,
+[data-site-variant="magazine"] .mag-chapters-mobile a {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-decoration: none;
+}
+[data-site-variant="magazine"] .mag-chapters-nav a:hover,
+[data-site-variant="magazine"] .mag-chapters-mobile a:hover {
+  color: var(--accent);
+}
+[data-site-variant="magazine"] .mag-chapters-mobile {
+  display: none;
+}
+@media (max-width: 900px) {
+  [data-site-variant="magazine"] .mag-chapters-desktop {
+    display: none;
+  }
+  [data-site-variant="magazine"] .mag-chapters-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px 14px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+}
+[data-site-variant="magazine"] .mag-cover {
+  position: relative;
+  min-height: 420px;
+  max-height: 700px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-bottom: 2px solid var(--line);
+}
+[data-site-variant="magazine"] .mag-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+[data-site-variant="magazine"] .mag-cover-veil {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 48px 18px 26px;
+  background: linear-gradient(to top, rgba(12, 22, 19, 0.92) 0%, rgba(12, 22, 19, 0.52) 58%, rgba(12, 22, 19, 0.14) 100%);
+  color: #fdfaf5;
+  text-align: right;
+}
+[data-site-variant="magazine"] .mag-cover-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  text-align: right;
+}
+[data-site-variant="magazine"] .mag-kicker {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #f4d39b;
+  display: block;
+  margin-bottom: 8px;
+  text-align: right;
+}
+[data-site-variant="magazine"] .mag-cover h1 {
+  font-family: 'Frank Ruhl Libre', var(--display);
+  font-size: clamp(34px, 6.5vw, 72px);
+  font-weight: 900;
+  line-height: 1.06;
+  margin: 0 0 10px;
+  color: #ffffff;
+  text-align: right;
+}
+[data-site-variant="magazine"] .mag-cover .mag-sub {
+  font-size: clamp(15.5px, 2.2vw, 20px);
+  line-height: 1.5;
+  max-width: 62ch;
+  color: rgba(253, 250, 245, 0.93);
+  margin: 0 0 18px;
+  text-align: right;
+}
+[data-site-variant="magazine"] .mag-glass-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 11px 14px;
+  border-radius: 16px;
+  background: rgba(20, 34, 30, 0.74);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+[data-site-variant="magazine"] .mag-ribbon-stat {
+  padding-inline-end: 12px;
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 13.5px;
+}
+[data-site-variant="magazine"] .mag-ribbon-stat:last-child {
+  border-inline-end: 0;
+}
+[data-site-variant="magazine"] .mag-chapter-header {
+  max-width: 1040px;
+  margin: 38px auto 12px;
+  padding: 0 16px 12px;
+  border-bottom: 1.5px solid var(--line);
+  text-align: right;
+}
+[data-site-variant="magazine"] .mag-chapter-num {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 800;
+  display: block;
+}
+[data-site-variant="magazine"] .mag-chapter-title {
+  font-family: 'Frank Ruhl Libre', var(--display);
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 900;
+  margin: 4px 0 4px;
+}
+[data-site-variant="magazine"] h2.t {
+  font-family: 'Frank Ruhl Libre', var(--display);
+}
