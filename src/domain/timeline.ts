@@ -306,6 +306,7 @@ export function buildSkiTimeline(
 
   // 2. Arrival border EES + Transfer MXP -> Livigno
   const destMapQuery = raw.firstNightBooked?.mapQuery ?? raw.apartment.mapQuery;
+  const tb = raw.transferBooked ?? null;
   pushEvent({
     id: 'transfer-arrival',
     dateIso: outLeg.date,
@@ -313,16 +314,29 @@ export function buildSkiTimeline(
     endClock: `~${derived.arriveLivignoClock}`,
     tz: 'Europe/Rome',
     kind: 'transfer',
-    titleHe: 'יציאה ממלפנסה (אחרי EES) ונסיעה לליביניו',
-    subHe: `דרך אגם קומו, הוולטלינה ומעבר Foscagno עד ${fnName}`,
+    titleHe: tb
+      ? `הסעה פרטית (${tb.provider}) ממלפנסה לליביניו`
+      : 'יציאה ממלפנסה (אחרי EES) ונסיעה לליביניו',
+    subHe: tb
+      ? `${tb.vehicleHe} · דרך אגם קומו, הוולטלינה ומעבר Foscagno עד ${fnName}`
+      : `דרך אגם קומו, הוולטלינה ומעבר Foscagno עד ${fnName}`,
     whereHe: `${outLeg.mapQuery} → ${destMapQuery}`,
     mapUrl: buildGoogleMapsRouteUrl(outLeg.mapQuery, destMapQuery, 'driving'),
     facts: [
       ['יציאה משוערת מהשדה', `${exitAirportClock} (כולל ${raw.dates.airportExitMin} דק׳ לרישום EES וכבודה)`],
       ['משך נסיעה ממוצע', `${transferDurText} שעות`],
       ['הגעה משוערת לליביניו', `~${derived.arriveLivignoClock}`],
+      ...(tb
+        ? ([
+            ['ספק ורכב', `${tb.provider} (${tb.contactName}) · ${tb.vehicleHe}`],
+            ['תשלום לנהג', `€${tb.eurWay} לכיוון (מזומן או אשראי · €${tb.eurWayFor4} ל-4 נוסעים)`],
+          ] as Array<[string, string]>)
+        : []),
     ],
-    notesHe: [`לוודא שלנהג יש את מספר הטיסה ${outLeg.flight} למעקב נחיתה והמתנה`],
+    notesHe: tb
+      ? [tb.meetingPointHe, tb.driverDetailsNoteHe]
+      : [`לוודא שלנהג יש את מספר הטיסה ${outLeg.flight} למעקב נחיתה והמתנה`],
+    ...(tb ? { links: [[`${tb.provider} ↗`, tb.url] as [string, string]] } : {}),
   });
 
   // 3. First Night Check-in & Morning Transition
@@ -482,14 +496,23 @@ export function buildSkiTimeline(
     endClock: derived.backAirportByClock,
     tz: 'Europe/Rome',
     kind: 'transfer',
-    titleHe: 'נסיעה מליביניו לנמל התעופה מלפנסה (MXP)',
-    subHe: `כולל מרווח ביטחון של ${raw.dates.roadBufferMin} דקות לתנועת שבת ולתנאי שלג במעבר Foscagno`,
+    titleHe: tb
+      ? `הסעה פרטית (${tb.provider}) מליביניו למלפנסה (MXP)`
+      : 'נסיעה מליביניו לנמל התעופה מלפנסה (MXP)',
+    subHe: tb
+      ? `${tb.vehicleHe} · המלצת ${tb.contactName} ליציאה ב-${tb.returnPickupClock} בגלל עומסי שבת`
+      : `כולל מרווח ביטחון של ${raw.dates.roadBufferMin} דקות לתנועת שבת ולתנאי שלג במעבר Foscagno`,
     whereHe: `${raw.apartment.address} → ${backLeg.mapQuery}`,
     mapUrl: buildGoogleMapsRouteUrl(raw.apartment.mapQuery, backLeg.mapQuery, 'driving'),
     facts: [
       ['יציאה מליביניו', derived.leaveLivignoClock],
       ['הגעת יעד למלפנסה T1', derived.backAirportByClock],
       ['המראה', backLeg.dep],
+      ...(tb
+        ? ([
+            ['תשלום לנהג', `€${tb.eurWay} לכיוון (מזומן או אשראי · €${tb.eurWayFor4} ל-4 נוסעים)`],
+          ] as Array<[string, string]>)
+        : []),
     ],
   });
 

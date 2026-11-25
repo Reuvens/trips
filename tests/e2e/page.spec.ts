@@ -189,8 +189,8 @@ test.describe('Family Trips Multi-Trip Engine — Real Browser E2E Suite', () =>
 
     await page.goto(MAG_URI);
     await page.click('#fxRateBtn');
-    // Offline fallback matches exact SSR ₪35,071 with zero rounding jump
-    await expect(page.locator('#budgetGrandIls')).toHaveText('₪35,071');
+    // Offline fallback matches exact SSR ₪34,448 with zero rounding jump
+    await expect(page.locator('#budgetGrandIls')).toHaveText('₪34,448');
 
     // Now mock live ECB rate 4.00
     await page.unroute('https://api.frankfurter.dev/**');
@@ -209,7 +209,7 @@ test.describe('Family Trips Multi-Trip Engine — Real Browser E2E Suite', () =>
 
     await page.click('#fxRateBtn');
     await expect(page.locator('#fxRateText')).toHaveText('€1 = ₪4.00');
-    await expect(page.locator('#budgetGrandIls')).toHaveText('₪38,284');
+    await expect(page.locator('#budgetGrandIls')).toHaveText('₪37,604');
   });
 
   test('[R2 & Simulator] currency/scope toggles and What-If Simulator stay 100% consistent', async ({
@@ -225,37 +225,38 @@ test.describe('Family Trips Multi-Trip Engine — Real Browser E2E Suite', () =>
     await page.click('[data-curr-btn="eur"]');
     const metaEurOnly = await page.locator('#budgetTotalMeta').innerText();
     expect(metaEurOnly).not.toContain('₪');
-    expect(metaEurOnly).toContain('€1,914');
+    expect(metaEurOnly).toContain('€1,880');
 
     await page.click('[data-curr-btn="ils"]');
     const metaIlsOnly = await page.locator('#budgetTotalMeta').innerText();
     expect(metaIlsOnly).not.toContain('€');
-    expect(metaIlsOnly).toContain('₪7,014');
+    expect(metaIlsOnly).toContain('₪6,890');
 
     await page.click('[data-curr-btn="both"]');
     await page.click('#scopeToggleBtn');
-    await expect(page.locator('#budgetGrandEur')).toHaveText('€1,914');
-    await expect(page.locator('#budgetGrandIls')).toHaveText('₪7,014');
+    await expect(page.locator('#budgetGrandEur')).toHaveText('€1,880');
+    await expect(page.locator('#budgetGrandIls')).toHaveText('₪6,890');
 
     // Simulator savings check
     await page.selectOption('#simGearSchool', { index: 1 });
-    await expect(page.locator('#simTotalEur')).toHaveText('€9,406');
+    await expect(page.locator('#simTotalEur')).toHaveText('€9,236');
     await page.click('#simResetBtn');
-    await expect(page.locator('#simTotalEur')).toHaveText('€9,571');
+    await expect(page.locator('#simTotalEur')).toHaveText('€9,401');
   });
 
   test('[P7+] ticking a task in Prep Tab syncs Done Zone, Priority Strip, and Trail Sign in Today Tab', async ({
     page,
   }) => {
     await page.goto(APP_URI);
+    await expect(page.locator('#signs .sign[data-sign-id="transfer"]')).toHaveClass(/done/);
     await page.click('[data-app-tab="prep"]');
 
-    await page.locator('.todo[data-item="transfer-book"] .dchk').click();
-    await expect(page.locator('#donelist .todo[data-item="transfer-book"]')).toHaveCount(1);
+    await page.locator('.todo[data-item="ski-school-book"] .dchk').click();
+    await expect(page.locator('#donelist .todo[data-item="ski-school-book"]')).toHaveCount(1);
 
     await page.click('[data-app-tab="today"]');
     await expect(page.locator('#openRemainingBadge')).toContainText('12');
-    await expect(page.locator('#signs .sign[data-sign-id="transfer"]')).toHaveClass(/done/);
+    await expect(page.locator('#signs .sign[data-sign-id="school"]')).toHaveClass(/done/);
   });
 
   test('[Site 1 Hash Routing] initial #vault URL hash and hashchange automatically activate Wallet tab', async ({

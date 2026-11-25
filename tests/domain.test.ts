@@ -27,19 +27,19 @@ describe('Pure Domain & Financial Derivation Engine (Layer 2)', () => {
     expect(vm.decided.passesEur).toBe(1400);
   });
 
-  it('computes exact €9,571 canonical budget and balanced 4-stage cashflow', () => {
-    expect(vm.budget.totalEur).toBe(9571);
+  it('computes exact €9,401 canonical budget and balanced 4-stage cashflow', () => {
+    expect(vm.budget.totalEur).toBe(9401);
     expect(vm.budget.paidEur).toBe(1650);
-    expect(vm.budget.leftEur).toBe(7921);
+    expect(vm.budget.leftEur).toBe(7751);
 
     const stageMap = Object.fromEntries(vm.budget.stages.map((s) => [s.key, s.eur]));
     expect(stageMap.paid).toBe(1650);
-    expect(stageMap.bookedPending).toBe(2200); // 1,650 Calanda balance + 550 Casa Noemi
-    expect(stageMap.toBookOnline).toBe(3865); // 1,230 + 1,400 + 680 + 555
+    expect(stageMap.bookedPending).toBe(3260); // 1,650 Calanda balance + 550 Casa Noemi + 1,060 Taxi Livigno
+    expect(stageMap.toBookOnline).toBe(2635); // 1,400 + 680 + 555
     expect(stageMap.onSite).toBe(1856); // 50 + 6 + 1,800
     expect(
       stageMap.paid! + stageMap.bookedPending! + stageMap.toBookOnline! + stageMap.onSite!
-    ).toBe(9571);
+    ).toBe(9401);
   });
 
   it('computes exact flight points, taxes, car rental, and Centrale bundle savings', () => {
@@ -56,11 +56,12 @@ describe('Pure Domain & Financial Derivation Engine (Layer 2)', () => {
     expect(rendered).toBe('<div>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</div>');
   });
 
-  it('generates lossless Markdown containing budget, stays, all 5 members, and all 13 tasks', () => {
+  it('generates lossless Markdown containing budget, stays, transfer, all 5 members, and all 13 tasks', () => {
     const md = generateCanonicalMarkdown(vm);
-    expect(md).toContain('€9,571');
+    expect(md).toContain('€9,401');
     expect(md).toContain('Appartamenti Calanda');
     expect(md).toContain('Casa Noemi');
+    expect(md).toContain('Taxi Livigno');
     for (const m of vm.party.members) {
       expect(md).toContain(m.nameHe);
     }

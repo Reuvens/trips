@@ -471,6 +471,39 @@ export interface TripViewModel {
     goodHe: string[];
     askHe: string[];
   } | null;
+  transferBooked: {
+    provider: string;
+    contactName: string;
+    email: string;
+    url: string;
+    bookedOnIso: string;
+    bookedDm: string;
+    bookedViaHe: string;
+    vehicleHe: string;
+    luggageHe: string;
+    eurWayFor4: number;
+    eurReturnFor4: number;
+    wayFor4Text: string;
+    returnFor4Text: string;
+    extraPaxEurWay: number;
+    extraPaxWayText: string;
+    eurWay: number;
+    eurReturn: number;
+    eurPaid: number;
+    wayText: string;
+    returnText: string;
+    ilsText: string;
+    savedVsPickEur: number;
+    savedVsPickText: string;
+    payMethodHe: string;
+    freeCancelHe: string;
+    outboundPickupHe: string;
+    returnPickupClock: string;
+    returnPickupNoteHe: string;
+    meetingPointHe: string;
+    driverDetailsNoteHe: string;
+    pendingItemsHe: string[];
+  } | null;
   fridayComparison: {
     checkedDateText: string;
     count: number;
@@ -689,19 +722,18 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
     throw new Error(`decidedResortId "${raw.decidedResortId}" does not match any resort`);
   }
 
+  const tbRaw = raw.transferBooked ?? null;
   const landExitMins = outArrMins + raw.dates.airportExitMin;
   const atMxpReturnMins = backDepMins - raw.dates.airportBeforeMin;
   const decidedArriveClock = minutesToClock(landExitMins + decidedRaw.transferMin);
-  const decidedLeaveClock = minutesToClock(
-    atMxpReturnMins - decidedRaw.transferMin - raw.dates.roadBufferMin,
-    15,
-    true
-  );
-  const decidedLastSkiClock = minutesToClock(
-    atMxpReturnMins - decidedRaw.transferMin - raw.dates.roadBufferMin - 90,
-    15,
-    true
-  );
+  const computedLeaveMins = atMxpReturnMins - decidedRaw.transferMin - raw.dates.roadBufferMin;
+  const decidedLeaveMins = tbRaw
+    ? parseClockMinutes(tbRaw.returnPickupClock).minutes
+    : computedLeaveMins;
+  const decidedLeaveClock = tbRaw
+    ? tbRaw.returnPickupClock
+    : minutesToClock(computedLeaveMins, 15, true);
+  const decidedLastSkiClock = minutesToClock(decidedLeaveMins - 90, 15, true);
 
   // Apartment & First Night pre-calculations (so tokens can reference them)
   const aptBalanceEur = raw.apartment.eurTotal - raw.apartment.eurPaid;
@@ -776,6 +808,25 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
           totalText: '',
           checkIn: '',
           freeCancelDm: '',
+        },
+    transferBooked: tbRaw
+      ? {
+          provider: tbRaw.provider,
+          contactName: tbRaw.contactName,
+          wayText: formatEur(tbRaw.eurWay),
+          returnText: formatEur(tbRaw.eurReturn),
+          for4WayText: formatEur(tbRaw.eurWayFor4),
+          for4ReturnText: formatEur(tbRaw.eurWayFor4 * 2),
+          returnPickupClock: tbRaw.returnPickupClock,
+        }
+      : {
+          provider: '',
+          contactName: '',
+          wayText: '',
+          returnText: '',
+          for4WayText: '',
+          for4ReturnText: '',
+          returnPickupClock: '',
         },
     decided: {
       baseM: decidedRaw.baseM.toLocaleString('en-US'),
@@ -1062,8 +1113,8 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
         peopleCount
       ),
       arriveHe: minutesToClock(arriveMins),
-      leaveByHe: minutesToClock(leaveMins, 15, true),
-      lastSkiHe: minutesToClock(leaveMins - 90, 15, true),
+      leaveByHe: isDecided && tbRaw ? decidedLeaveClock : minutesToClock(leaveMins, 15, true),
+      lastSkiHe: isDecided && tbRaw ? decidedLastSkiClock : minutesToClock(leaveMins - 90, 15, true),
       fridaySkiPossible: arriveMins + 90 <= 14 * 60,
       stays: staysVM,
       rentals: (r.rentals ?? []).map((v) => ({
@@ -1315,20 +1366,48 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
     );
   }
 
+  if (tbRaw) {
+    const tbPending = Math.max(0, tbRaw.eurReturn - tbRaw.eurPaid);
+    budgetLines.push(
+      makeBudgetLine({
+        key: 'transfers',
+        labelHe: `הסעות · ${tbRaw.provider}`,
+        eur: tbRaw.eurReturn,
+        conf: 'quoted',
+        stage: tbPending > 0 ? 'bookedPending' : 'paid',
+        paidEur: tbRaw.eurPaid,
+        bookedPendingEur: tbPending,
+        statusHe:
+          tbPending > 0
+            ? `הוזמן · תשלום ישיר לנהג (${formatEur(tbRaw.eurWay)} לכיוון במזומן/אשראי)`
+            : 'שולם במלואו',
+        whatHe: `${tbRaw.vehicleHe} · ${formatEur(tbRaw.eurWay)} לכיוון ל-${peopleCount} (${formatEur(
+          tbRaw.eurWayFor4
+        )} ל-4) · ביטול חינם`,
+        srcUrl: tbRaw.url,
+        srcLabelHe: tbRaw.provider,
+        isBooked: true,
+      })
+    );
+  } else {
+    budgetLines.push(
+      makeBudgetLine({
+        key: 'transfers',
+        labelHe: 'הסעות · הלוך וחזור',
+        eur: decided.pickTransfer.eurReturn,
+        conf: decided.pickTransfer.conf,
+        stage: 'toBookOnline',
+        toBookOnlineEur: decided.pickTransfer.eurReturn,
+        statusHe: 'להזמין מראש',
+        whatHe: `${decided.pickTransfer.name} · ${decided.pickTransfer.whatHe}`,
+        srcUrl: decided.pickTransfer.url,
+        srcLabelHe: decided.pickTransfer.name.split(' — ')[0],
+        isBooked: false,
+      })
+    );
+  }
+
   budgetLines.push(
-    makeBudgetLine({
-      key: 'transfers',
-      labelHe: 'הסעות · הלוך וחזור',
-      eur: decided.pickTransfer.eurReturn,
-      conf: decided.pickTransfer.conf,
-      stage: 'toBookOnline',
-      toBookOnlineEur: decided.pickTransfer.eurReturn,
-      statusHe: 'להזמין מראש',
-      whatHe: `${decided.pickTransfer.name} · ${decided.pickTransfer.whatHe}`,
-      srcUrl: decided.pickTransfer.url,
-      srcLabelHe: decided.pickTransfer.name.split(' — ')[0],
-      isBooked: false,
-    }),
     makeBudgetLine({
       key: 'passes',
       labelHe: `סקי-פס · ${skiDays} ימים (${skiersCount} גולשים)`,
@@ -1409,13 +1488,17 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
     makeStage(
       'bookedPending',
       'הוזמן — יתרה לתשלום',
-      'יתרת Calanda + חיוב אוטומטי ב-Booking ל-Casa Noemi',
+      tbRaw
+        ? `יתרת Calanda + Casa Noemi (Booking) + הסעת ${tbRaw.provider} ישירות לנהג`
+        : 'יתרת Calanda + חיוב אוטומטי ב-Booking ל-Casa Noemi',
       stageBookedPendingEur
     ),
     makeStage(
       'toBookOnline',
       'להזמין מראש אונליין',
-      'הסעה, סקי-פס, קורס מתחילות והשכרת ציוד',
+      tbRaw
+        ? 'סקי-פס, קורס מתחילות והשכרת ציוד'
+        : 'הסעה, סקי-פס, קורס מתחילות והשכרת ציוד',
       stageToBookOnlineEur
     ),
     makeStage('onSite', 'הוצאה שוטפת במקום', 'אוכל במסעדות/סופר ומסי תיירות בעיירה', stageOnSiteEur),
@@ -1457,12 +1540,13 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
     beginnersCount * raw.simulator.centraleCourseAndGearPerBeginnerEur +
     raw.simulator.reuvenStandaloneGoldGearEur;
   const sharedTransferOpt = decided.transferOptions.find((o) => o.isShared);
+  const activePrivateTransferEur = tbRaw ? tbRaw.eurReturn : decided.pickTransfer.eurReturn;
 
   const simulator = {
     canonicalTotalEur: budgetTotalEur,
-    transferPrivateEur: decided.pickTransfer.eurReturn,
+    transferPrivateEur: activePrivateTransferEur,
     transferCarEur: decided.carOption.eurReturn,
-    transferSharedEur: sharedTransferOpt?.eurReturn ?? decided.pickTransfer.eurReturn,
+    transferSharedEur: sharedTransferOpt?.eurReturn ?? activePrivateTransferEur,
     gearPlusSchoolSeparateEur,
     gearPlusSchoolCentraleBundleEur,
     centraleBundleSavingsEur: gearPlusSchoolSeparateEur - gearPlusSchoolCentraleBundleEur,
@@ -1529,14 +1613,23 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
           href: '#friday-alts',
           linkedTaskIds: ['friday-cheaper'],
         },
-    {
-      id: 'transfer',
-      labelHe: 'הסעה ממלפנסה',
-      statusHe: 'להזמין',
-      done: false,
-      href: '#getting',
-      linkedTaskIds: ['transfer-book'],
-    },
+    tbRaw
+      ? {
+          id: 'transfer',
+          labelHe: `הסעה · ${tbRaw.provider}`,
+          statusHe: 'סגור',
+          done: true,
+          href: '#getting',
+          linkedTaskIds: [],
+        }
+      : {
+          id: 'transfer',
+          labelHe: 'הסעה ממלפנסה',
+          statusHe: 'להזמין',
+          done: false,
+          href: '#getting',
+          linkedTaskIds: ['transfer-book'],
+        },
     {
       id: 'passes',
       labelHe: `סקי-פס · ${skiDays} ימים`,
@@ -1566,9 +1659,12 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
   const openSignNames = signs
     .filter((s) => !s.done)
     .map((s) => s.labelHe.split(' · ')[0]!);
-  const doneIntroHe = fnRaw
-    ? 'הטיסות, הדירה והלילה הראשון סגורים'
-    : 'הטיסות והדירה סגורות';
+  const doneIntroHe =
+    fnRaw && tbRaw
+      ? 'הטיסות, הדירה, הלילה הראשון וההסעה סגורים'
+      : fnRaw
+        ? 'הטיסות, הדירה והלילה הראשון סגורים'
+        : 'הטיסות והדירה סגורות';
   const leftJoinedHe =
     openSignNames.length > 1
       ? `${openSignNames.slice(0, -1).join(', ')} ו${openSignNames[openSignNames.length - 1]}`
@@ -1658,6 +1754,42 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
       subjectEn: `Arrival question — ${fnRaw.name} (${startEnMonthYear})`,
       bodyEn: noemiEn,
       bodyIt: noemiIt,
+    });
+  }
+
+  if (tbRaw) {
+    const endParsed = parseIsoDate(raw.dates.end);
+    const endEnShort = `${endParsed.day} ${EN_MONTHS[endParsed.month - 1]} ${endParsed.year}`;
+    const taxiEn = [
+      `Hi ${tbRaw.contactName},`,
+      `Following up with our flight and address details for our confirmed transfers (Reuven Sayag):`,
+      `- Arrival: Friday ${startEnMonthYear}, El Al flight ${outLegRaw.flight} landing at Milan Malpensa Terminal 1 at ${outLegRaw.arr}.`,
+      `- Drop-off in Livigno: ${fnRaw ? `${fnRaw.name}, ${fnRaw.address}` : raw.apartment.address}.`,
+      `- Return pickup: Saturday ${endEnShort} at ${tbRaw.returnPickupClock} from ${raw.apartment.name} (${raw.apartment.address}) to Milan Malpensa Terminal 1 (flight ${backLegRaw.flight} at ${backLegRaw.dep}).`,
+      `I will update you a few weeks before the trip whether we are 4 or 5 passengers.`,
+      `Thank you!`,
+      `Reuven Sayag`,
+    ].join('\n');
+
+    const taxiIt = [
+      `Buongiorno ${tbRaw.contactName},`,
+      `Ecco i dettagli del volo e degli indirizzi per i nostri transfer confermati (Reuven Sayag):`,
+      `- Arrivo: venerdì ${formatDmy(raw.dates.start)}, volo El Al ${outLegRaw.flight} in arrivo a Milano Malpensa Terminal 1 alle ${outLegRaw.arr}.`,
+      `- Destinazione a Livigno: ${fnRaw ? `${fnRaw.name}, ${fnRaw.address}` : raw.apartment.address}.`,
+      `- Ritorno: sabato ${formatDmy(raw.dates.end)} alle ${tbRaw.returnPickupClock} da ${raw.apartment.name} (${raw.apartment.address}) a Milano Malpensa Terminal 1 (volo ${backLegRaw.flight} alle ${backLegRaw.dep}).`,
+      `Ti confermerò qualche settimana prima se saremo 4 o 5 passeggeri.`,
+      `Grazie mille,`,
+      `Reuven Sayag`,
+    ].join('\n');
+
+    hostMessages.push({
+      id: 'msg-taxi',
+      recipientTitleHe: `הודעת המשך ל-${tbRaw.contactName} (${tbRaw.provider})`,
+      channelHe: `אימייל (${tbRaw.email})`,
+      bookingHelperHe: `שליחת מספר טיסה ${outLegRaw.flight}, כתובת הורדה (${fnRaw?.name ?? 'ליביניו'}) וכתובת איסוף חזור (Calanda ב-${tbRaw.returnPickupClock})`,
+      subjectEn: `Flight ${outLegRaw.flight} & Livigno addresses — Transfer ${startEnMonthYear} (Reuven Sayag)`,
+      bodyEn: taxiEn,
+      bodyIt: taxiIt,
     });
   }
 
@@ -1872,6 +2004,41 @@ export function deriveTripViewModel(raw: TripData, rates: RatesData): TripViewMo
             ...fnRaw.goodHe.map(interp),
           ],
           askHe: fnRaw.askHe.map(interp),
+        }
+      : null,
+    transferBooked: tbRaw
+      ? {
+          provider: tbRaw.provider,
+          contactName: tbRaw.contactName,
+          email: tbRaw.email,
+          url: tbRaw.url,
+          bookedOnIso: tbRaw.bookedOn,
+          bookedDm: formatDm(tbRaw.bookedOn),
+          bookedViaHe: interp(tbRaw.bookedViaHe),
+          vehicleHe: interp(tbRaw.vehicleHe),
+          luggageHe: interp(tbRaw.luggageHe),
+          eurWayFor4: tbRaw.eurWayFor4,
+          eurReturnFor4: tbRaw.eurWayFor4 * 2,
+          wayFor4Text: formatEur(tbRaw.eurWayFor4),
+          returnFor4Text: formatEur(tbRaw.eurWayFor4 * 2),
+          extraPaxEurWay: tbRaw.extraPaxEurWay,
+          extraPaxWayText: formatEur(tbRaw.extraPaxEurWay),
+          eurWay: tbRaw.eurWay,
+          eurReturn: tbRaw.eurReturn,
+          eurPaid: tbRaw.eurPaid,
+          wayText: formatEur(tbRaw.eurWay),
+          returnText: formatEur(tbRaw.eurReturn),
+          ilsText: formatIls(tbRaw.eurReturn * eurRate),
+          savedVsPickEur: decided.pickTransfer.eurReturn - tbRaw.eurReturn,
+          savedVsPickText: formatEur(decided.pickTransfer.eurReturn - tbRaw.eurReturn),
+          payMethodHe: interp(tbRaw.payMethodHe),
+          freeCancelHe: interp(tbRaw.freeCancelHe),
+          outboundPickupHe: interp(tbRaw.outboundPickupHe),
+          returnPickupClock: tbRaw.returnPickupClock,
+          returnPickupNoteHe: interp(tbRaw.returnPickupNoteHe),
+          meetingPointHe: interp(tbRaw.meetingPointHe),
+          driverDetailsNoteHe: interp(tbRaw.driverDetailsNoteHe),
+          pendingItemsHe: tbRaw.pendingItemsHe.map(interp),
         }
       : null,
     fridayComparison,

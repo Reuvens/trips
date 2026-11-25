@@ -65,8 +65,8 @@ describe('Executable Policy & Anti-Drift Invariants (Layer 2 — Positive & Nega
     const nextMd = generateCanonicalMarkdown(nextVm);
 
     expect(nextVm.budget.paidEur).toBe(2200); // 1,650 + 550
-    expect(nextVm.budget.leftEur).toBe(7371);
-    expect(nextVm.budget.totalEur).toBe(9571);
+    expect(nextVm.budget.leftEur).toBe(7201);
+    expect(nextVm.budget.totalEur).toBe(9401);
 
     const results = runAllPolicyChecks({
       rawYamlObj: bundle.rawYamlObj,

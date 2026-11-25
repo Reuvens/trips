@@ -163,6 +163,30 @@ export const BookedFirstNightSchema = z.object({
   askHe: z.array(z.string().min(3)).min(1),
 });
 
+export const BookedTransferSchema = z.object({
+  provider: z.string().min(2),
+  contactName: z.string().min(2),
+  email: z.string().email(),
+  url: HttpsUrlSchema,
+  bookedOn: IsoDateSchema,
+  bookedViaHe: z.string().min(3),
+  vehicleHe: z.string().min(3),
+  luggageHe: z.string().min(3),
+  eurWayFor4: z.number().int().positive(),
+  extraPaxEurWay: z.number().int().nonnegative(),
+  eurWay: z.number().int().positive(),
+  eurReturn: z.number().int().positive(),
+  eurPaid: z.number().int().nonnegative(),
+  payMethodHe: z.string().min(3),
+  freeCancelHe: z.string().min(3),
+  outboundPickupHe: z.string().min(3),
+  returnPickupClock: ClockSchema,
+  returnPickupNoteHe: z.string().min(3),
+  meetingPointHe: z.string().min(3),
+  driverDetailsNoteHe: z.string().min(3),
+  pendingItemsHe: z.array(z.string().min(3)).min(1),
+});
+
 export const CandidateStaySchema = z
   .object({
     name: z.string().min(3),
@@ -522,6 +546,7 @@ export const TripDataSchema = z.object({
     .refine((a) => a.eurLow <= a.eurHigh, 'lodgingComparisonAssumption requires eurLow <= eurHigh'),
   apartment: BookedApartmentSchema,
   firstNightBooked: BookedFirstNightSchema.nullable(),
+  transferBooked: BookedTransferSchema.nullable().optional(),
   excludedHe: z.array(z.string().min(3)).min(3),
   carRental: z.object({
     nameHe: z.string().min(3),

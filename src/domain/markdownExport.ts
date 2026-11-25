@@ -68,6 +68,19 @@ export function generateCanonicalMarkdown(vm: TripViewModel): string {
   lines.push(`- **לברר מול המארח:** ${vm.apartment.askHe.join(' | ')}`);
   lines.push('');
 
+  if (vm.transferBooked) {
+    const tb = vm.transferBooked;
+    lines.push(`### הסעה פרטית הלוך-חזור (אושרה ב-${tb.bookedDm}): ${tb.provider} (${tb.contactName})`);
+    lines.push(`- **רכב וכבודה:** ${tb.vehicleHe} · ${tb.luggageHe}`);
+    lines.push(`- **הלוך:** ${tb.outboundPickupHe}`);
+    lines.push(`- **חזור:** יציאה ב-${tb.returnPickupClock} מ-${vm.apartment.name} למלפנסה (${tb.returnPickupNoteHe})`);
+    lines.push(
+      `- **עלות ותשלום:** ${tb.returnText} (${tb.wayText} לכיוון ל-5 נוסעים / ${tb.returnFor4Text} ל-4) · ${tb.payMethodHe} · ${tb.freeCancelHe}`
+    );
+    lines.push(`- **קשר ופרטי נהג:** ${tb.email} · ${tb.driverDetailsNoteHe}`);
+    lines.push('');
+  }
+
   // 4. Week Schedule
   lines.push('## 4. מבנה השבוע');
   lines.push('');

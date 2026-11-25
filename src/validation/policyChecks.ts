@@ -568,7 +568,9 @@ export function runAllPolicyChecks(ctx: PolicyCheckContext): CheckResult[] {
     }
 
     const expectedPaidTotal =
-      ctx.trip.apartment.eurPaid + (ctx.trip.firstNightBooked?.eurPaid ?? 0);
+      ctx.trip.apartment.eurPaid +
+      (ctx.trip.firstNightBooked?.eurPaid ?? 0) +
+      (ctx.trip.transferBooked?.eurPaid ?? 0);
     if (b.paidEur !== expectedPaidTotal) {
       problems.push(`סכום שולם בתקציב (${b.paidEur}) != סכום ההזמנות ששולמו (${expectedPaidTotal})`);
     }
@@ -663,6 +665,9 @@ export function runAllPolicyChecks(ctx: PolicyCheckContext): CheckResult[] {
     if (!md.includes(ctx.vm.apartment.name)) missingParts.push('דירת Calanda');
     if (ctx.vm.firstNight && !md.includes(ctx.vm.firstNight.name)) {
       missingParts.push('לילה ראשון Casa Noemi');
+    }
+    if (ctx.vm.transferBooked && !md.includes(ctx.vm.transferBooked.provider)) {
+      missingParts.push(`הסעה ${ctx.vm.transferBooked.provider}`);
     }
 
     if (missingParts.length > 0) {

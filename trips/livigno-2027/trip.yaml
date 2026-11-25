@@ -13,7 +13,7 @@ meta:
   id: "ski-livigno-2027"
   sharedPublicly: true
   artifactUrl: "https://claude.ai/artifact/HFdawCWnkEQEJo3tuLUNDB"
-  lastDataReview: "2026-11-11"
+  lastDataReview: "2026-11-25"
 
 dates:
   start: "2027-02-26"
@@ -238,6 +238,32 @@ firstNightBooked:
     - "מגיעים בסביבות {{ decided.arriveHe }} והצ׳ק-אין מ-{{ firstNight.checkIn }} — האם ניתן להשאיר מזוודות או להיכנס מוקדם?"
     - "איפה ומתי אוספים את המפתחות בדירה"
     - "וידוא מצעים ומגבות לחמישה ללילה אחד"
+
+transferBooked:
+  provider: "Taxi Livigno"
+  contactName: "Matteo Rini"
+  email: "info@taxilivigno.eu"
+  url: "https://taxilivigno.eu/en/transfer-taxi-livigno/"
+  bookedOn: "2026-11-25"
+  bookedViaHe: "אושר ישירות במייל מול Matteo Rini (Taxi Livigno)"
+  vehicleHe: "מיניוואן מרצדס פרטי (7–8 מושבים)"
+  luggageHe: "מקום מרווח לחמש מזוודות ללא תוספת תשלום על כבודה"
+  eurWayFor4: 500
+  extraPaxEurWay: 30
+  eurWay: 530
+  eurReturn: 1060
+  eurPaid: 0
+  payMethodHe: "תשלום ישיר לנהג במזומן או בכרטיס אשראי (ללא תשלום מראש)"
+  freeCancelHe: "ביטול חינם עד מספר ימים לפני ההסעה · ניתן לעדכן ל-4 נוסעים מספר שבועות מראש"
+  outboundPickupHe: "שישי {{ dates.startDm }} סביב 09:00 (אחרי נחיתת {{ flights.out.flight }} ב-{{ flights.out.arr }}) ממלפנסה (MXP) אל {{ firstNight.name }} בליביניו"
+  returnPickupClock: "14:00"
+  returnPickupNoteHe: "המלצת Matteo: יציאה בסביבות {{ transferBooked.returnPickupClock }} בגלל עומסי שבת בדרך חזרה, כדי להגיע למלפנסה סביב 19:00"
+  meetingPointHe: "הנהג ימתין בנמל התעופה מלפנסה עם שלט הנושא את שמך"
+  driverDetailsNoteHe: "Matteo ייצור קשר מספר ימים לפני ההסעה וישלח את שם הנהג ומספר הטלפון שלו"
+  pendingItemsHe:
+    - "לשלוח ל-Matteo את מספר טיסת ההגעה ({{ flights.out.flight }}) וכתובות ההורדה והאיסוף ({{ firstNight.name }} ו-Calanda)"
+    - "לעדכן מספר שבועות מראש האם מצטרפים 4 או 5 נוסעים ({{ transferBooked.for4ReturnText }} ל-4 מול {{ transferBooked.returnText }} ל-5)"
+    - "לקבל מ-Matteo את שם הנהג והטלפון מספר ימים לפני ההגעה"
 
 excludedHe:
   - "טיסות אל על — כבר שולמו בנפרד ({{ flights.pointsTotalText }} נקודות מתמיד + {{ flights.usdTotalText }} מסים)"
@@ -1212,15 +1238,15 @@ openItems:
     actionUrl: "https://scuolascicentrale.it/adult-courses/?lang=en"
     actionLabelHe: "הרשמה ב-Scuola Sci Centrale"
     whatHe: "קורס קבוצתי למבוגרים (מגיל 14), {{ dates.courseSpanHe }} בשעות {{ dates.courseHoursText }} — ולהחליט האם לקחת דרכם גם את חבילת הציוד ({{ sim.centraleBundlePerBeginnerText }} במקום {{ decided.lessons.unitText }} לקורס בלבד). קבוצות מתחילים מתמלאות ראשונות."
-  - id: "transfer-book"
-    titleHe: "להזמין הסעה פרטית הלוך וחזור עם ביטול חינם"
+  - id: "transfer-flight-details"
+    titleHe: "לשלוח ל-Matteo (Taxi Livigno) מספר טיסה {{ flights.out.flight }} ולאשר 4/5 נוסעים"
     urgency: "amber"
     deadline: "2027-01-15"
     category: "logistics"
     targetAnchor: "#getting"
-    actionUrl: "https://city-airport-taxis.com/airporttransfers/reservations/taxi-from-Milan-Malpensa-Airport-to-Livigno"
-    actionLabelHe: "City Airport Taxis"
-    whatHe: "הלוך בשישי {{ dates.startDm }} מהנחיתה ב-{{ flights.out.arr }} עד {{ firstNight.name }} בליביניו (לציין טיסה {{ flights.out.flight }}, 5 מזוודות והמתנה ל-EES), וחזור בשבת {{ dates.endDm }} ב-{{ decided.leaveByHe }} מ-Calanda למלפנסה."
+    actionUrl: "https://taxilivigno.eu/en/transfer-taxi-livigno/"
+    actionLabelHe: "Taxi Livigno"
+    whatHe: "ההסעה הלוך-חזור אושרה ({{ transferBooked.returnText }} ל-5 נוסעים / {{ transferBooked.for4ReturnText }} ל-4, תשלום לנהג). לשלוח ל-Matteo את מספר טיסת ההגעה {{ flights.out.flight }}, כתובות {{ firstNight.name }} ו-Calanda, ולעדכן כמה שבועות מראש על 4 או 5 נוסעים."
   - id: "friday-cheaper"
     titleHe: "לבדוק אם התפנה לילה ראשון זול יותר בתוך ליביניו"
     urgency: "amber"

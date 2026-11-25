@@ -245,7 +245,7 @@ export function renderBudgetSection(vm: TripViewModel): SafeHtml {
             <div class="sim-control">
               <label for="simTransfer">1. הגעה ממלפנסה הלוך-חזור</label>
               <select id="simTransfer">
-                <option value="${s.transferPrivateEur}" selected>הסעה פרטית מומלצת (€${s.transferPrivateEur.toLocaleString('en-US')})</option>
+                <option value="${s.transferPrivateEur}" selected>${vm.transferBooked ? `הסעה שהוזמנה: ${vm.transferBooked.provider}` : 'הסעה פרטית מומלצת'} (€${s.transferPrivateEur.toLocaleString('en-US')})</option>
                 <option value="${s.transferCarEur}">שכירת וואן 7 מקומות כולל דלק (€${s.transferCarEur.toLocaleString('en-US')})</option>
                 <option value="${s.transferSharedEur}">שאטל משותף Livigno Express (€${s.transferSharedEur.toLocaleString('en-US')})</option>
               </select>

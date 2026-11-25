@@ -227,98 +227,231 @@ export function renderStaySection(vm: TripViewModel): SafeHtml {
 export function renderGettingSection(vm: TripViewModel): SafeHtml {
   const car = vm.decided.carOption;
   const cr = vm.carRental;
+  const tb = vm.transferBooked;
 
   return html`
     <section id="getting">
       <div class="wrap">
-        <h2 class="t">משדה התעופה מלפנסה ובחזרה</h2>
+        <h2 class="t">משדה התעופה מלפנסה ובחזרה${tb ? ' — ההסעה הוזמנה' : ''}</h2>
         <p class="sub">
           <span class="mono">${vm.decided.transferHe}</span> לכיוון ממילאנו מלפנסה (MXP) דרך Lecco, עמק הוולטלינה ומעבר Foscagno.
-          ההעדפה שלך היא הסעה פרטית עם נהג וביטול חינם — ולצדה מוצג תחשיב מלא של השכרת וואן 7 מקומות להשוואה.
+          ${tb
+            ? html`ההסעה הפרטית הלוך-חזור אושרה מול <b>${tb.provider}</b> (${tb.contactName}) ב-<span class="mono">${tb.returnText}</span> (<span class="mono">${tb.wayText}</span> לכיוון ל-5 נוסעים / <span class="mono">${tb.wayFor4Text}</span> ל-4) — חוסכת <span class="mono">${tb.savedVsPickText}</span> לעומת ההצעה הקודמת.`
+            : html`ההעדפה שלך היא הסעה פרטית עם נהג וביטול חינם — ולצדה מוצג תחשיב מלא של השכרת וואן 7 מקומות להשוואה.`}
         </p>
 
-        <h3 class="t">
-          הסעות לחמישה עם מזוודות — הלוך וחזור
-          <span class="chip c-wn">להזמין מראש</span>
-        </h3>
-        <div class="tablewrap" id="transferstable">
-          <table>
-            <thead>
-              <tr>
-                <th>אפשרות</th>
-                <th>הלוך וחזור (5)</th>
-                <th>לכיוון</th>
-                <th>פירוט ותנאי ביטול</th>
-                <th>להזמנה</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${vm.decided.transferOptions.map(
-                (o) => html`
-                  <tr class="${o.pick ? 'pickrow' : ''}">
-                    <td>
-                      <b>${o.name}</b>
-                      ${o.pick ? html` <span class="chip c-ok">המומלצת</span>` : ''}
-                      <br />
-                      <span class="chip ${o.conf === 'quoted' ? 'c-ok' : 'c-wn'}">
-                        ${o.conf === 'quoted' ? 'מחיר מפורסם' : 'חישוב שלנו'}
-                      </span>
-                    </td>
-                    <td class="p"><b>~${o.eurText}</b></td>
-                    <td class="p">~${o.wayText}</td>
-                    <td>
-                      ${o.whatHe}
-                      ${o.watchHe ? html`<br /><span class="muted">${o.watchHe}</span>` : ''}
-                      ${o.freeCancelHe ? html`<br /><b>ביטול:</b> ${o.freeCancelHe}` : ''}
-                    </td>
-                    <td><a class="glink" href="${o.url}" target="_blank" rel="noopener">לעמוד ההזמנה</a></td>
-                  </tr>
-                `
-              )}
-              <tr class="car">
-                <td>
-                  <b>${car.nameHe}</b> <span class="chip c-ac">חלופה בסימולטור</span>
-                  <br />
-                  <span class="chip c-wn">חישוב שלנו</span>
-                </td>
-                <td class="p"><b>~${car.eurText}</b></td>
-                <td class="p">—</td>
-                <td>
-                  ${car.whatHe}
-                  <br />
-                  <span class="muted">${car.watchHe} · <b>${car.vsPickHe}</b></span>
-                  <br />
-                  <b>ביטול:</b> ${cr.freeCancelHe}
-                </td>
-                <td>
-                  <a class="glink" href="${car.url}" target="_blank" rel="noopener">DiscoverCars</a><br />
-                  <a class="glink" href="${car.compareUrl}" target="_blank" rel="noopener">Kayak</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        ${tb
+          ? html`
+              <div class="chalet" id="transfercard" style="margin-bottom:20px">
+                <div class="roof">
+                  <span class="ch-when">הלוך וחזור · אושר ב-${tb.bookedDm} · ביטול חינם</span>
+                  <h4>${tb.provider} — ${tb.contactName}</h4>
+                  <p>${tb.vehicleHe}. ${tb.luggageHe}.</p>
+                  <div class="ch-foot">
+                    <span>תשלום ישיר לנהג במזומן או אשראי · ללא מקדמה</span>
+                    <span class="mono">${tb.returnText} (${tb.wayText} לכיוון)</span>
+                  </div>
+                </div>
+                <div class="ch-body">
+                  <dl class="kv">
+                    <dt>ספק ואיש קשר</dt><dd><b>${tb.provider}</b> · ${tb.contactName} (<span class="ltr">${tb.email}</span>)</dd>
+                    <dt>סטטוס הזמנה</dt><dd>${tb.bookedViaHe}</dd>
+                    <dt>רכב וכבודה</dt><dd>${tb.vehicleHe} — ${tb.luggageHe}</dd>
+                    <dt>הלוך (${vm.dates.startDm})</dt><dd>${tb.outboundPickupHe}</dd>
+                    <dt>חזור (${vm.dates.endDm})</dt><dd>איסוף מ-${vm.apartment.name} בשעה <b class="mono">${tb.returnPickupClock}</b> — ${tb.returnPickupNoteHe}</dd>
+                    <dt>תמחור מאושר</dt><dd><b><span class="mono">${tb.wayText}</span> לכיוון (<span class="mono">${tb.returnText}</span> הלוך-חזור)</b> ל-5 נוסעים · ל-4 נוסעים: <span class="mono">${tb.wayFor4Text}</span> לכיוון (<span class="mono">${tb.returnFor4Text}</span> הלוך-חזור, תוספת <span class="mono">${tb.extraPaxWayText}</span> לכיוון לכל נוסע נוסף)</dd>
+                    <dt>תשלום וביטול</dt><dd>${tb.payMethodHe} · <b>${tb.freeCancelHe}</b></dd>
+                    <dt>מפגש ופרטי נהג</dt><dd>${tb.meetingPointHe}. ${tb.driverDetailsNoteHe}.</dd>
+                  </dl>
+                  <div class="grid2" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)">
+                    <div>
+                      <h5>נשאר לסגור מול ${tb.contactName}</h5>
+                      <ul>
+                        ${tb.pendingItemsHe.map((x) => html`<li>${x}</li>`)}
+                      </ul>
+                    </div>
+                    <div>
+                      <h5>דגשי הטיסות והכתובות</h5>
+                      <ul>
+                        <li><b>טיסת הגעה:</b> <span class="mono">${vm.flights.out.flight}</span> נוחתת ב-<span class="mono">${vm.flights.out.arr}</span> בטרמינל 1 (לשמור מרווח לרישום EES).</li>
+                        <li><b>יעד ההורדה בשישי:</b> ${vm.firstNight?.name ?? 'ליל שישי'} (<span class="ltr">${vm.firstNight?.address ?? 'Livigno'}</span>).</li>
+                        <li><b>איסוף בשבת האחרונה:</b> מ-${vm.apartment.name} (<span class="ltr">${vm.apartment.address}</span>) ב-<span class="mono">${tb.returnPickupClock}</span>, הגעה למלפנסה עד <span class="mono">${vm.flights.back.airportByClock}</span>.</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="links">
+                    <a class="glink" href="${tb.url}" target="_blank" rel="noopener">אתר ${tb.provider}</a>
+                    <a class="glink" href="#hostMessageStudio">נוסח מייל מוכן לשליחת פרטי הטיסה ↗</a>
+                  </div>
+                </div>
+              </div>
+            `
+          : ''}
 
-        <div class="grid2" style="margin-top:18px">
-          <div class="info">
-            <h4>4 פרטים שחובה לציין בהזמנת ההסעה</h4>
-            <ul>
-              <li><b>מספר טיסה (${vm.flights.out.flight}) וזמן המתנה בנחיתה</b> — רישום ה-EES החדש בגבול יכול להוסיף עיכוב.</li>
-              <li><b>5 מזוודות גדולות + 5 תיקי יד</b> — כדי שיגיע מיניוואן מרווח ולא רכב סטיישן צפוף.</li>
-              <li><b>יעד ההורדה בשישי:</b> ${vm.firstNight?.name ?? 'ליל שישי'} (<span class="ltr">${vm.firstNight?.address ?? 'Livigno'}</span>).</li>
-              <li><b>שעת האיסוף בשבת האחרונה:</b> מ-${vm.apartment.name} ב-<span class="mono">${vm.decided.leaveByHe}</span> כדי להגיע למלפנסה עד <span class="mono">${vm.flights.back.airportByClock}</span>.</li>
-            </ul>
-          </div>
-          <div class="info">
-            <h4>ואם בכל זאת שוכרים רכב? (${cr.nameHe} · ${cr.days} ימים)</h4>
-            <p style="margin:0 0 8px;font-size:14.5px;color:var(--ink-2)">
-              בסיס השכרה ל-<span class="mono">${cr.days}</span> ימים: ~<span class="mono">${cr.eurPerDayText}</span> ליום + ביטוח מלא ~<span class="mono">${cr.coverPerDayText}</span> ליום + ציוד חורף ~<span class="mono">${cr.winterPerDayText}</span> ליום = <b><span class="mono">${cr.baseText}</span></b> לפני דלק ואגרות (<b>ביטול:</b> ${cr.freeCancelHe}).
-            </p>
-            <ul>
-              ${cr.watchHe.map((item) => html`<li>${item}</li>`)}
-            </ul>
-          </div>
-        </div>
+        ${tb
+          ? html`
+              <details class="q" id="transfer-alts">
+                <summary>להשוואה: הצעות הסעה נוספות והשכרת וואן שנבדקו לפני ההזמנה</summary>
+                <div class="qb">
+                  <div class="tablewrap" id="transferstable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>אפשרות</th>
+                          <th>הלוך וחזור (5)</th>
+                          <th>לכיוון</th>
+                          <th>פירוט ותנאי ביטול</th>
+                          <th>קישור</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="pickrow">
+                          <td>
+                            <b>${tb.provider} — מיניוואן מרצדס</b> <span class="chip c-ok">הוזמן</span>
+                            <br />
+                            <span class="chip c-ok">מאושר במייל</span>
+                          </td>
+                          <td class="p"><b>${tb.returnText}</b></td>
+                          <td class="p">${tb.wayText}</td>
+                          <td>
+                            ${tb.vehicleHe} · ${tb.luggageHe}
+                            <br /><b>תשלום:</b> ${tb.payMethodHe}
+                            <br /><b>ביטול:</b> ${tb.freeCancelHe}
+                          </td>
+                          <td><a class="glink" href="${tb.url}" target="_blank" rel="noopener">אתר הספק</a></td>
+                        </tr>
+                        ${vm.decided.transferOptions.map(
+                          (o) => html`
+                            <tr>
+                              <td>
+                                <b>${o.name}</b>
+                                ${o.pick ? html` <span class="chip c-wn">ההמלצה הקודמת</span>` : ''}
+                                <br />
+                                <span class="chip ${o.conf === 'quoted' ? 'c-ok' : 'c-wn'}">
+                                  ${o.conf === 'quoted' ? 'מחיר מפורסם' : 'חישוב שלנו'}
+                                </span>
+                              </td>
+                              <td class="p"><b>~${o.eurText}</b></td>
+                              <td class="p">~${o.wayText}</td>
+                              <td>
+                                ${o.whatHe}
+                                ${o.watchHe ? html`<br /><span class="muted">${o.watchHe}</span>` : ''}
+                                ${o.freeCancelHe ? html`<br /><b>ביטול:</b> ${o.freeCancelHe}` : ''}
+                              </td>
+                              <td><a class="glink" href="${o.url}" target="_blank" rel="noopener">לעמוד ההזמנה</a></td>
+                            </tr>
+                          `
+                        )}
+                        <tr class="car">
+                          <td>
+                            <b>${car.nameHe}</b> <span class="chip c-ac">חלופה בסימולטור</span>
+                            <br />
+                            <span class="chip c-wn">חישוב שלנו</span>
+                          </td>
+                          <td class="p"><b>~${car.eurText}</b></td>
+                          <td class="p">—</td>
+                          <td>
+                            ${car.whatHe}
+                            <br />
+                            <span class="muted">${car.watchHe}</span>
+                            <br />
+                            <b>ביטול:</b> ${cr.freeCancelHe}
+                          </td>
+                          <td>
+                            <a class="glink" href="${car.url}" target="_blank" rel="noopener">DiscoverCars</a><br />
+                            <a class="glink" href="${car.compareUrl}" target="_blank" rel="noopener">Kayak</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </details>
+            `
+          : html`
+              <h3 class="t">
+                הסעות לחמישה עם מזוודות — הלוך וחזור
+                <span class="chip c-wn">להזמין מראש</span>
+              </h3>
+              <div class="tablewrap" id="transferstable">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>אפשרות</th>
+                      <th>הלוך וחזור (5)</th>
+                      <th>לכיוון</th>
+                      <th>פירוט ותנאי ביטול</th>
+                      <th>להזמנה</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${vm.decided.transferOptions.map(
+                      (o) => html`
+                        <tr class="${o.pick ? 'pickrow' : ''}">
+                          <td>
+                            <b>${o.name}</b>
+                            ${o.pick ? html` <span class="chip c-ok">המומלצת</span>` : ''}
+                            <br />
+                            <span class="chip ${o.conf === 'quoted' ? 'c-ok' : 'c-wn'}">
+                              ${o.conf === 'quoted' ? 'מחיר מפורסם' : 'חישוב שלנו'}
+                            </span>
+                          </td>
+                          <td class="p"><b>~${o.eurText}</b></td>
+                          <td class="p">~${o.wayText}</td>
+                          <td>
+                            ${o.whatHe}
+                            ${o.watchHe ? html`<br /><span class="muted">${o.watchHe}</span>` : ''}
+                            ${o.freeCancelHe ? html`<br /><b>ביטול:</b> ${o.freeCancelHe}` : ''}
+                          </td>
+                          <td><a class="glink" href="${o.url}" target="_blank" rel="noopener">לעמוד ההזמנה</a></td>
+                        </tr>
+                      `
+                    )}
+                    <tr class="car">
+                      <td>
+                        <b>${car.nameHe}</b> <span class="chip c-ac">חלופה בסימולטור</span>
+                        <br />
+                        <span class="chip c-wn">חישוב שלנו</span>
+                      </td>
+                      <td class="p"><b>~${car.eurText}</b></td>
+                      <td class="p">—</td>
+                      <td>
+                        ${car.whatHe}
+                        <br />
+                        <span class="muted">${car.watchHe} · <b>${car.vsPickHe}</b></span>
+                        <br />
+                        <b>ביטול:</b> ${cr.freeCancelHe}
+                      </td>
+                      <td>
+                        <a class="glink" href="${car.url}" target="_blank" rel="noopener">DiscoverCars</a><br />
+                        <a class="glink" href="${car.compareUrl}" target="_blank" rel="noopener">Kayak</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="grid2" style="margin-top:18px">
+                <div class="info">
+                  <h4>4 פרטים שחובה לציין בהזמנת ההסעה</h4>
+                  <ul>
+                    <li><b>מספר טיסה (${vm.flights.out.flight}) וזמן המתנה בנחיתה</b> — רישום ה-EES החדש בגבול יכול להוסיף עיכוב.</li>
+                    <li><b>5 מזוודות גדולות + 5 תיקי יד</b> — כדי שיגיע מיניוואן מרווח ולא רכב סטיישן צפוף.</li>
+                    <li><b>יעד ההורדה בשישי:</b> ${vm.firstNight?.name ?? 'ליל שישי'} (<span class="ltr">${vm.firstNight?.address ?? 'Livigno'}</span>).</li>
+                    <li><b>שעת האיסוף בשבת האחרונה:</b> מ-${vm.apartment.name} ב-<span class="mono">${vm.decided.leaveByHe}</span> כדי להגיע למלפנסה עד <span class="mono">${vm.flights.back.airportByClock}</span>.</li>
+                  </ul>
+                </div>
+                <div class="info">
+                  <h4>ואם בכל זאת שוכרים רכב? (${cr.nameHe} · ${cr.days} ימים)</h4>
+                  <p style="margin:0 0 8px;font-size:14.5px;color:var(--ink-2)">
+                    בסיס השכרה ל-<span class="mono">${cr.days}</span> ימים: ~<span class="mono">${cr.eurPerDayText}</span> ליום + ביטוח מלא ~<span class="mono">${cr.coverPerDayText}</span> ליום + ציוד חורף ~<span class="mono">${cr.winterPerDayText}</span> ליום = <b><span class="mono">${cr.baseText}</span></b> לפני דלק ואגרות (<b>ביטול:</b> ${cr.freeCancelHe}).
+                  </p>
+                  <ul>
+                    ${cr.watchHe.map((item) => html`<li>${item}</li>`)}
+                  </ul>
+                </div>
+              </div>
+            `}
       </div>
     </section>
   `;
